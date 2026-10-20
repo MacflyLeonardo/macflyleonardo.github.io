@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZHIGUNOV ENERGO — Инженерный электромонтаж и сборка щитов в Миассе | жигунов-энерго.рф</title>
+    <meta name="description" content="Проектируем, монтируем и защищаем электрические сети в Миассе. Официальная гарантия 6 месяцев на соединения, именной технический паспорт объекта по ГОСТ. Мастер Алексей Жигунов: +7 (931) 972-16-57.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter & Unbounded for Architectural Editorial Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#121214',
+                        charcoal: '#17171A',
+                        surface: '#1E1E22',
+                        energo: '#E2FF00',
+                        energoWarm: '#F59E0B',
+                        muted: '#8E8E93',
+                        hairline: 'rgba(255, 255, 255, 0.12)'
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Editorial & Architectural Styles */
+        body {
+            background-color: #141416;
+            color: #F5F5F7;
+            font-family: 'Manrope', 'Inter', sans-serif;
+            overflow-x: hidden;
+            selection-background-color: #E2FF00;
+            selection-color: #121214;
+        }
+
+        ::selection {
+            background: #E2FF00;
+            color: #121214;
+        }
+
+        /* Subtle Ambient Radial Glows like the reference */
+        .ambient-glow-blue {
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.11) 0%, rgba(18, 18, 20, 0) 70%);
+        }
+        .ambient-glow-lime {
+            background: radial-gradient(circle, rgba(226, 255, 0, 0.08) 0%, rgba(18, 18, 20, 0) 70%);
+        }
+        .ambient-glow-white {
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.09) 0%, rgba(20, 20, 22, 0) 68%);
+        }
+
+        /* Editorial Two-Tone Heading Helper */
+        .editorial-heading {
+            letter-spacing: -0.03em;
+            line-height: 1.06;
+            text-transform: uppercase;
+        }
+
+        /* Blueprint Crosshair Nodes (White square dots at intersections) */
+        .blueprint-node {
+            position: relative;
+        }
+        .node-dot {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #F5F5F7;
+            z-index: 20;
+            pointer-events: none;
+            box-shadow: 0 0 8px rgba(255,255,255,0.6);
+        }
+        .node-tl { top: -3px; left: -3px; }
+        .node-tr { top: -3px; right: -3px; }
+        .node-bl { bottom: -3px; left: -3px; }
+        .node-br { bottom: -3px; right: -3px; }
+
+        /* Heptagon Clip Path for Central Ecosystem Image */
+        .clip-heptagon {
+            clip-path: polygon(
+                50% 2%,
+                90% 20%,
+                98% 62%,
+                73% 96%,
+                27% 96%,
+                2% 62%,
+                10% 20%
+            );
+        }
+
+        /* Concentric Subtle Rings around Polygon section */
+        .concentric-rings {
+            background-image: 
+                radial-gradient(circle at center, transparent 22%, rgba(255,255,255,0.03) 22.3%, transparent 22.6%),
+                radial-gradient(circle at center, transparent 36%, rgba(255,255,255,0.03) 36.3%, transparent 36.6%),
+                radial-gradient(circle at center, transparent 50%, rgba(255,255,255,0.025) 50.3%, transparent 50.6%),
+                radial-gradient(circle at center, transparent 65%, rgba(255,255,255,0.02) 65.3%, transparent 65.6%);
+        }
+
+        /* Smooth Card Zoom */
+        .project-card .card-img {
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-card:hover .card-img {
+            transform: scale(1.04);
+        }
+
+        /* Vertex Button Pulse */
+        .vertex-btn {
+            transition: all 0.3s ease;
+        }
+        .vertex-btn.active .vertex-dot {
+            background-color: #E2FF00;
+            box-shadow: 0 0 0 6px rgba(226, 255, 0, 0.25), 0 0 18px #E2FF00;
+            transform: scale(1.25);
+        }
+        .vertex-btn.active .vertex-label {
+            color: #E2FF00;
+            font-weight: 700;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121214;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2C2C32;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E2FF00;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-energo selection:text-obsidian">
+
+    <!-- ======================== 1. HERO SECTION (FULL-BLEED ARCHITECTURAL) ======================== -->
+    <header class="relative w-full min-h-screen flex flex-col justify-between overflow-hidden bg-obsidian">
+        
+        <!-- Background Image with Editorial Dark Gradient Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=85" 
+                alt="Современная архитектура и инженерные системы Zhigunov Energo" 
+                class="w-full h-full object-cover object-center scale-105 brightness-75 contrast-110"
+                onerror="this.src='https://placehold.co/1920x1080/141416/8E8E93?text=ZHIGUNOV+ENERGO'"
+            >
+            <!-- Multi-layer gradient to match reference lighting -->
+            <div class="absolute inset-0 bg-gradient-to-r from-[#121214]/95 via-[#121214]/65 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#141416] via-transparent to-[#121214]/70"></div>
+        </div>
+
+        <!-- Top Minimalist Navigation Bar -->
+        <nav class="relative z-30 w-full max-w-[1440px] mx-auto px-5 sm:px-10 pt-6 pb-4 flex items-center justify-between border-b border-white/10">
+            <!-- Brand Logo (Polygonal Bear + Lightning Crown SVG) -->
+            <a href="#" class="flex items-center gap-3.5 group">
+                <div class="w-11 h-11 rounded-xl bg-[#0B1324]/90 border border-energo/50 flex items-center justify-center p-1.5 shadow-lg group-hover:border-energo transition">
+                    <svg viewBox="0 0 100 100" class="w-full h-full">
+                        <!-- Lightning Crown -->
+                        <polygon points="30,22 20,6 38,16 50,2 56,16 80,6 68,22" fill="#E2FF00"/>
+                        <!-- Heraldic Shield -->
+                        <polygon points="18,26 82,26 82,62 50,94 18,62" fill="#0F1D3A" stroke="#E2FF00" stroke-width="4"/>
+                        <polygon points="18,26 50,26 50,94 18,62" fill="#E2FF00" fill-opacity="0.18"/>
+                        <!-- Polygonal Bear Silhouette -->
+                        <polygon points="26,64 32,46 46,42 58,42 70,48 74,56 66,60 64,72 56,72 54,62 42,62 40,72 30,72" fill="#E2FF00"/>
+                    </svg>
+                </div>
+                <div class="leading-none">
+                    <div class="text-sm sm:text-base font-extrabold tracking-wider text-white">ZHIGUNOV</div>
+                    <div class="text-[10px] sm:text-[11px] font-bold tracking-[0.26em] text-energo mt-0.5">E N E R G O</div>
+                </div>
+            </a>
+
+            <!-- Center Navigation Pill -->
+            <div class="hidden lg:flex items-center gap-7 px-6 py-2.5 rounded-full bg-black/45 backdrop-blur-md border border-white/10 text-xs font-medium text-white/85">
+                <a href="#projects" class="hover:text-energo transition">Услуги и проекты</a>
+                <a href="#scenarios" class="hover:text-energo transition">Когда вызывать</a>
+                <a href="#ecosystem" class="hover:text-energo transition">7 стандартов защиты</a>
+                <a href="#passports" class="hover:text-energo transition">Паспорт щита</a>
+                <a href="#calculator" class="hover:text-energo transition">Шпаргалка ГОСТ и расчёт</a>
+            </div>
+
+            <!-- Right Contact Actions -->
+            <div class="flex items-center gap-2.5">
+                <a href="tel:+79319721657" class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-xs font-semibold text-white hover:border-energo transition">
+                    <span class="w-2 h-2 rounded-full bg-energo animate-pulse"></span>
+                    <span>+7 (931) 972-16-57</span>
+                </a>
+                <button onclick="openLeadModal('Быстрая консультация с первого экрана')" class="w-9 h-9 rounded-full bg-white/10 hover:bg-energo hover:text-obsidian backdrop-blur-md border border-white/15 flex items-center justify-center transition" title="Оставить заявку">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H8M17 7V16"/>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Hero Main Editorial Content -->
+        <div class="relative z-20 w-full max-w-[1440px] mx-auto px-5 sm:px-10 pt-14 pb-12 lg:py-20 flex-1 flex flex-col justify-center">
+            <div class="max-w-2xl">
+                <!-- Location & Status Badge -->
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md border border-white/15 text-[11px] uppercase tracking-widest text-white/80 mb-6">
+                    <span class="text-energo font-bold">⚡ Г. МИАСС</span>
+                    <span class="text-white/30">•</span>
+                    <span>ИНЖЕНЕРНЫЙ ЭЛЕКТРОМОНТАЖ</span>
+                </div>
+
+                <!-- Two-tone Editorial Headline (Strictly matching reference typography) -->
+                <h1 class="editorial-heading text-3xl sm:text-5xl lg:text-[54px] font-normal tracking-tight">
+                    <span class="text-white font-medium">ПРОЕКТИРУЕМ</span><br>
+                    <span class="text-white/65">МОНТИРУЕМ</span><br>
+                    <span class="text-white/65">И ЗАЩИЩАЕМ</span><br>
+                    <span class="text-white font-medium">ЭЛЕКТРОСЕТИ</span><br>
+                    <span class="text-white/60">ВАШЕГО ДОМА</span>
+                </h1>
+
+                <!-- Concise Editorial Paragraph -->
+                <p class="mt-8 text-xs sm:text-sm text-white/80 max-w-md leading-relaxed font-normal">
+                    От замены одной розетки и подключения варочной панели до сборки современных электрощитов с защитой от скачков напряжения и утечек тока. Выдаём официальный технический паспорт объекта и честную гарантию 6 месяцев на все выполненные соединения.
+                </p>
+
+                <!-- CTA Row (White rectangular pill + Minimal link like reference) -->
+                <div class="mt-8 flex flex-wrap items-center gap-6">
+                    <button onclick="openLeadModal('Обсудить задачу / Вызвать мастера')" class="px-6 py-3.5 rounded-lg bg-white text-obsidian font-semibold text-xs sm:text-sm tracking-tight hover:bg-energo transition shadow-lg">
+                        Обсудить задачу
+                    </button>
+                    <a href="#passports" class="text-xs sm:text-sm text-white/75 hover:text-white underline underline-offset-4 transition">
+                        Посмотреть паспорт щита →
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom-Right Inset Dark Stats Bar (Matching Reference Bottom Overlay) -->
+        <div class="relative z-20 w-full max-w-[1440px] mx-auto px-5 sm:px-10">
+            <div class="lg:ml-auto lg:w-[54%] bg-[#141416] border-t border-l border-r border-white/10 rounded-t-2xl p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="flex flex-col gap-2">
+                    <span class="w-2 h-2 bg-white inline-block mb-1"></span>
+                    <div class="text-xs sm:text-sm font-semibold text-white">Именной паспорт на каждый заказ</div>
+                    <p class="text-xs text-muted leading-relaxed">
+                        От мини-карточки А6 при замене розетки до 6-страничного паспорта электрощита с однолинейной схемой по ГОСТ и маркировкой автоматов.
+                    </p>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <span class="w-2 h-2 bg-energo inline-block mb-1"></span>
+                    <div class="text-xs sm:text-sm font-semibold text-white">Прозрачная смета и допуск</div>
+                    <p class="text-xs text-muted leading-relaxed">
+                        Мастер Алексей Жигунов (самозанятый НПД). Точная оценка по фото до выезда, помощь в закупке ГОСТ-кабеля без переплат.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- ======================== 2. STAGGERED PORTFOLIO & SERVICES ("ПРОЕКТЫ И ГЕОГРАФИЯ РАБОТЫ") ======================== -->
+    <section id="projects" class="relative py-24 sm:py-32 px-5 sm:px-10 max-w-[1440px] mx-auto">
+        
+        <!-- Soft Ambient Glow on Top-Left (Like Reference) -->
+        <div class="pointer-events-none absolute top-12 left-0 w-[480px] h-[480px] ambient-glow-white -z-0"></div>
+
+        <!-- Staggered 2-Column Editorial Layout -->
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-y-16 lg:gap-x-12 items-start">
+            
+            <!-- Left Column: Section Heading + Card 2 + Card 4 -->
+            <div class="lg:col-span-6 flex flex-col">
+                <!-- Editorial Heading -->
+                <div class="mb-14 lg:mb-28 max-w-md">
+                    <h2 class="editorial-heading text-3xl sm:text-4xl lg:text-[42px]">
+                        <span class="text-white font-medium">УСЛУГИ</span><br>
+                        <span class="text-white/40">И ГЕОГРАФИЯ</span><br>
+                        <span class="text-white/40">РАБОТЫ</span>
+                    </h2>
+                    <p class="mt-5 text-xs sm:text-sm text-muted leading-relaxed">
+                        Выезжаем во все районы Миасса: Автозавод, Машгородок, Старый город, пос. Строителей, Динамо и Тургояк. Под каждый уровень работ — свой инженерный регламент и документ.
+                    </p>
+                </div>
+
+                <!-- Card 2 (Left Middle): Силовая кухонная техника и бойлеры -->
+                <article class="project-card group cursor-pointer mb-16 lg:mb-28" onclick="openLeadModal('Подключение варочной панели / духовки / бойлера')">
+                    <div class="overflow-hidden rounded-[22px] bg-surface border border-white/10 aspect-[4/3.2] relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1200&q=80" 
+                            alt="Подключение варочных панелей, духовых шкафов и водонагревателей" 
+                            class="card-img w-full h-full object-cover brightness-90"
+                            onerror="this.src='https://placehold.co/800x640/1E1E22/E2FF00?text=СИЛОВАЯ+ТЕХНИКА'"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[11px] font-mono text-white/90">
+                            <span class="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md border border-white/15">Линия 4–6 мм² (32А) / 2,5 мм² (16А)</span>
+                            <span class="px-2.5 py-1 rounded bg-energo text-obsidian font-bold">Книжка-паспорт 2 стр.</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-center gap-2.5">
+                        <h3 class="text-sm sm:text-base font-bold uppercase tracking-wide text-white group-hover:text-energo transition">СИЛОВАЯ ТЕХНИКА</h3>
+                        <span class="px-2.5 py-0.5 rounded bg-white/10 text-[10px] font-semibold uppercase tracking-wider text-white/75">ВАРОЧНЫЕ • ДУХОВКИ • БОЙЛЕРЫ</span>
+                    </div>
+                    <p class="mt-2 text-xs text-muted max-w-md leading-relaxed">
+                        Раздельный безопасный монтаж: варочные панели до 7,2 кВт — на кабель 4–6 мм² и силовую пару 32А; духовые шкафы до 3,5 кВт — на линию 2,5 мм² и розетку 16А с соблюдением теплового зазора.
+                    </p>
+                </article>
+
+                <!-- Card 4 (Left Bottom): Мелкий ремонт, розетки и освещение -->
+                <article class="project-card group cursor-pointer" onclick="openLeadModal('Замена розеток, выключателей, монтаж люстр')">
+                    <div class="overflow-hidden rounded-[22px] bg-surface border border-white/10 aspect-[4/3] relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=1200&q=80" 
+                            alt="Установка розеток, выключателей и светильников в Миассе" 
+                            class="card-img w-full h-full object-cover brightness-90"
+                            onerror="this.src='https://placehold.co/800x600/1E1E22/E2FF00?text=РОЗЕТКИ+И+СВЕТ'"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[11px] font-mono text-white/90">
+                            <span class="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md border border-white/15">Монтаж на гипс в глубокий стакан</span>
+                            <span class="px-2.5 py-1 rounded bg-white text-obsidian font-bold">Мини-паспорт А6</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-center gap-2.5">
+                        <h3 class="text-sm sm:text-base font-bold uppercase tracking-wide text-white group-hover:text-energo transition">РОЗЕТКИ, СВЕТ И СРОЧНЫЙ РЕМОНТ</h3>
+                        <span class="px-2.5 py-0.5 rounded bg-white/10 text-[10px] font-semibold uppercase tracking-wider text-white/75">ВЫЕЗД В ДЕНЬ ОБРАЩЕНИЯ</span>
+                    </div>
+                    <p class="mt-2 text-xs text-muted max-w-md leading-relaxed">
+                        Надёжная фиксация выпавших подрозетников в бетоне (без хлипких распорных лапок), перенос розеток, навеска люстр, бра и поиск короткого замыкания.
+                    </p>
+                </article>
+            </div>
+
+            <!-- Right Column: Card 1 (Top) + Card 3 (Lower) -->
+            <div class="lg:col-span-6 flex flex-col">
+                
+                <!-- Card 1 (Right Top): Сборка и модернизация электрощитов -->
+                <article class="project-card group cursor-pointer mb-16 lg:mb-32" onclick="openLeadModal('Сборка и модернизация электрощита')">
+                    <div class="overflow-hidden rounded-[22px] bg-surface border border-white/10 aspect-[4/2.9] relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=80" 
+                            alt="Сборка современных электрощитов в Миассе" 
+                            class="card-img w-full h-full object-cover brightness-90"
+                            onerror="this.src='https://placehold.co/800x580/1E1E22/E2FF00?text=СБОРКА+ЭЛЕКТРОЩИТОВ'"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[11px] font-mono text-white/90">
+                            <span class="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md border border-white/15">ГОСТ Р 50571 • УЗО • Реле напряжения</span>
+                            <span class="px-2.5 py-1 rounded bg-energo text-obsidian font-bold">Полный паспорт 6 стр.</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-center gap-2.5">
+                        <h3 class="text-sm sm:text-base font-bold uppercase tracking-wide text-white group-hover:text-energo transition">СБОРКА ЭЛЕКТРОЩИТОВ</h3>
+                        <span class="px-2.5 py-0.5 rounded bg-white/10 text-[10px] font-semibold uppercase tracking-wider text-white/75">КВАРТИРЫ И КОТТЕДЖИ</span>
+                    </div>
+                    <p class="mt-2 text-xs text-muted max-w-md leading-relaxed">
+                        Проектирование и аккуратная сборка щитов с трёхуровневой защитой: реле контроля напряжения (от отгорания нуля), УЗО 30мА на мокрые зоны и фирменная маркировка каждого модуля 17,5 мм.
+                    </p>
+                </article>
+
+                <!-- Card 3 (Right Lower): Квартиры, новостройки и частные дома -->
+                <article class="project-card group cursor-pointer lg:mt-8" onclick="openLeadModal('Электромонтаж в квартире / частном доме')">
+                    <div class="overflow-hidden rounded-[22px] bg-surface border border-white/10 aspect-[4/3.1] relative">
+                        <img 
+                            src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80" 
+                            alt="Замена проводки в квартирах и частных домах Миасса" 
+                            class="card-img w-full h-full object-cover brightness-90"
+                            onerror="this.src='https://placehold.co/800x620/1E1E22/E2FF00?text=КВАРТИРЫ+И+ДОМА'"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-[11px] font-mono text-white/90">
+                            <span class="px-2.5 py-1 rounded bg-black/60 backdrop-blur-md border border-white/15">Кабель ВВГнг(А)-LS ГОСТ</span>
+                            <span class="px-2.5 py-1 rounded bg-white/90 text-obsidian font-bold">Акт + Схема линий</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap items-center gap-2.5">
+                        <h3 class="text-sm sm:text-base font-bold uppercase tracking-wide text-white group-hover:text-energo transition">КВАРТИРЫ И ЗАГОРОДНЫЕ ДОМА</h3>
+                        <span class="px-2.5 py-0.5 rounded bg-white/10 text-[10px] font-semibold uppercase tracking-wider text-white/75">ВТОРИЧНЫЙ ФОНД И НОВОСТРОЙКИ</span>
+                    </div>
+                    <p class="mt-2 text-xs text-muted max-w-md leading-relaxed">
+                        Замена ветхого алюминия в хрущёвках и брежневках на медный кабель честного сечения по ГОСТ. Разводка электрики под будущую кухню и мебель без опасных скруток.
+                    </p>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ======================== 3. ARCHITECTURAL BLUEPRINT GRID ("КОГДА СТОИТ ПОДКЛЮЧИТЬ ZHIGUNOV ENERGO") ======================== -->
+    <section id="scenarios" class="relative py-20 sm:py-28 px-5 sm:px-10 max-w-[1440px] mx-auto">
+        
+        <!-- Blueprint Grid Container with Hairline Borders & Square Corner Nodes -->
+        <div class="border-t border-b border-hairline relative">
+            
+            <!-- Row 1: Title (2 cols) + Image Card (1 col) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 border-b border-hairline">
+                
+                <!-- Top-Left 2 Columns: Editorial Title -->
+                <div class="lg:col-span-2 p-6 sm:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-hairline blueprint-node">
+                    <span class="node-dot node-tl"></span>
+                    <span class="node-dot node-tr"></span>
+                    <span class="node-dot node-bl"></span>
+                    <span class="node-dot node-br"></span>
+                    
+                    <h2 class="editorial-heading text-2xl sm:text-4xl lg:text-[40px] max-w-lg">
+                        <span class="text-white font-medium">КОГДА СТОИТ</span><br>
+                        <span class="text-white font-medium">ПОДКЛЮЧИТЬ</span><br>
+                        <span class="text-white/40">ZHIGUNOV ENERGO</span>
+                    </h2>
+                </div>
+
+                <!-- Top-Right 1 Column: Visual Card with Corner Nodes -->
+                <div class="p-4 sm:p-6 blueprint-node flex items-center justify-center">
+                    <span class="node-dot node-tr"></span>
+                    <span class="node-dot node-br"></span>
+                    <div class="w-full h-56 sm:h-64 rounded-2xl overflow-hidden relative border border-white/10">
+                        <img 
+                            src="https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=900&q=80" 
+                            alt="Инженерный контроль электросети" 
+                            class="w-full h-full object-cover brightness-90"
+                            onerror="this.src='https://placehold.co/600x400/1E1E22/E2FF00?text=ZHIGUNOV+ENERGO'"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-3 left-3 right-3 text-[11px] text-white/90 font-mono flex justify-between">
+                            <span>Контроль соединений</span>
+                            <span class="text-energo">ГОСТ 31996</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Scenarios 1 & 2 + Empty Architectural Spacer -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 border-b border-hairline">
+                <div class="p-6 sm:p-10 border-b lg:border-b-0 lg:border-r border-hairline blueprint-node hover:bg-white/[0.02] transition">
+                    <span class="node-dot node-bl"></span>
+                    <span class="node-dot node-br"></span>
+                    <div class="text-[11px] font-mono text-energo mb-2">01 / ВТОРИЧНОЕ ЖИЛЬЁ</div>
+                    <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2.5">ПОКУПКА КВАРТИРЫ В СТАРОМ ФОНДЕ</h3>
+                    <p class="text-xs text-muted leading-relaxed">
+                        В хрущёвках и старых панельках Миасса часто двухпроводная сеть без заземления и обгоревшие алюминиевые скрутки. Проведём ревизию, честно отметим статус заземления и защитим семью с помощью УЗО 30 мА.
+                    </p>
+                </div>
+
+                <div class="p-6 sm:p-10 border-b lg:border-b-0 lg:border-r border-hairline blueprint-node hover:bg-white/[0.02] transition">
+                    <span class="node-dot node-br"></span>
+                    <div class="text-[11px] font-mono text-energo mb-2">02 / НОВАЯ КУХНЯ</div>
+                    <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2.5">УСТАНОВКА МОЩНОЙ ТЕХНИКИ</h3>
+                    <p class="text-xs text-muted leading-relaxed">
+                        Нельзя включать варочную панель, духовку и посудомойку в один тройник. Проложим выделенные линии нужного сечения, установим силовые разъёмы 32А и выдадим паспорт оборудования.
+                    </p>
+                </div>
+
+                <div class="hidden lg:flex p-6 sm:p-10 items-center justify-center text-xs font-mono text-white/25">
+                    [ ИНЖЕНЕРНЫЙ СТАНДАРТ МИАСС ]
+                </div>
+            </div>
+
+            <!-- Row 3: Empty Spacer + Scenarios 3 & 4 (Staggered like reference) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3">
+                <div class="hidden lg:flex p-6 sm:p-10 border-r border-hairline blueprint-node items-end justify-between text-xs font-mono text-white/30">
+                    <span class="node-dot node-bl"></span>
+                    <span class="node-dot node-br"></span>
+                    <span>ДОПУСК ПО ЭЛЕКТРОБЕЗОПАСНОСТИ</span>
+                    <span class="text-energo">НПД</span>
+                </div>
+
+                <div class="p-6 sm:p-10 border-b lg:border-b-0 lg:border-r border-hairline blueprint-node hover:bg-white/[0.02] transition">
+                    <span class="node-dot node-br"></span>
+                    <div class="text-[11px] font-mono text-energo mb-2">03 / МОДЕРНИЗАЦИЯ ЩИТА</div>
+                    <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2.5">В ЩИТКЕ «ПАУТИНА» И ВЫБИВАЕТ АВТОМАТЫ</h3>
+                    <p class="text-xs text-muted leading-relaxed">
+                        Переберём старый щиток: заменим советские «пробки» на надёжную автоматику, поставим реле напряжения, подпишем каждый рычажок понятным языком и приложим однолинейную схему ГОСТ.
+                    </p>
+                </div>
+
+                <div class="p-6 sm:p-10 blueprint-node hover:bg-white/[0.02] transition">
+                    <span class="node-dot node-br"></span>
+                    <div class="text-[11px] font-mono text-energo mb-2">04 / СРОЧНАЯ ДИАГНОСТИКА</div>
+                    <h3 class="text-xs sm:text-sm font-bold uppercase tracking-wider text-white mb-2.5">ЗАПАХ ПЛАСТИКА, ИСКРЫ ИЛИ ПОГАС СВЕТ</h3>
+                    <p class="text-xs text-muted leading-relaxed">
+                        Не щёлкайте выбитым автоматом больше 1–2 раз подряд! Оперативно приедем, локализуем короткое замыкание или утечку тока на ТЭН и восстановим питание без риска пожара.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ======================== 4. GEOMETRIC POLYGON DIAGRAM ("ЭЛЕКТРИКЕ НУЖНА СИСТЕМНАЯ ЗАЩИТА") ======================== -->
+    <section id="ecosystem" class="relative py-24 sm:py-32 px-5 sm:px-10 max-w-[1440px] mx-auto concentric-rings overflow-hidden">
+        
+        <!-- Top Row: Left Editorial Title + Right Context Paragraphs -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16 sm:mb-24">
+            <div class="lg:col-span-7">
+                <h2 class="editorial-heading text-2xl sm:text-4xl lg:text-[42px]">
+                    <span class="text-white font-medium">БЕЗОПАСНОМУ ДОМУ</span><br>
+                    <span class="text-white/40">НУЖНА СИСТЕМНАЯ</span><br>
+                    <span class="text-white font-medium">ИНЖЕНЕРИЯ</span>
+                </h2>
+            </div>
+            <div class="lg:col-span-5 text-xs sm:text-sm text-muted space-y-4 leading-relaxed">
+                <p>
+                    Надёжная электрика — это не просто «скрутить провода изолентой». Когда щит собирает один случайный мастер, розетки ставит другой, а технику подключает доставщик из магазина — никто не отвечает за безопасность в целом.
+                </p>
+                <p class="text-white/85">
+                    В <strong class="text-energo font-semibold">Zhigunov Energo</strong> каждый узел — от калибровки сечения медной жилы до проверки кнопки «Тест» на УЗО и выдачи паспорта — объединён в единый стандарт качества. Нажмите на любую грань ниже:
+                </p>
+            </div>
+        </div>
+
+        <!-- Central Interactive Heptagon Diagram (Matching Reference Polygon Image) -->
+        <div class="relative max-w-4xl mx-auto my-8 sm:my-14">
+            
+            <!-- Desktop Orbiting Vertex Labels around the 7-sided Polygon -->
+            <div class="relative flex flex-col items-center justify-center py-6 sm:py-16">
+                
+                <!-- Vertex 1: Top Center -->
+                <button onclick="selectVertex(0)" class="vertex-btn active group mb-4 sm:mb-0 sm:absolute sm:top-0 sm:left-1/2 sm:-translate-x-1/2 flex flex-col items-center gap-2 z-20 focus:outline-none">
+                    <span class="vertex-label text-xs sm:text-sm text-white/85 group-hover:text-energo transition">1. Замер жилы по ГОСТ</span>
+                    <span class="vertex-dot w-3 h-3 rounded-full bg-white transition"></span>
+                </button>
+
+                <!-- Vertex 2: Top Right -->
+                <button onclick="selectVertex(1)" class="vertex-btn hidden sm:flex sm:absolute sm:top-[21%] sm:right-[4%] lg:right-[8%] items-center gap-3 z-20 focus:outline-none group">
+                    <span class="vertex-dot w-3 h-3 rounded-full bg-white transition"></span>
+                    <span class="vertex-label text-xs sm:text-sm text-white/85 group-hover:text-energo transition text-left">2. Трёхуровневая защита<br><span class="text-[11px] text-muted">КЗ • УЗО 30мА • Реле U</span></span>
+                </button>
+
+                <!-- Vertex 3: Middle-Low Right -->
+                <button onclick="selectVertex(2)" class="vertex-btn hidden sm:flex sm:absolute sm:top-[58%] sm:right-[0%] lg:right-[3%] items-center gap-3 z-20 focus:outline-none group">
+                    <span class="vertex-dot w-3 h-3 rounded-full bg-white transition"></span>
+                    <span class="vertex-label text-xs sm:text-sm text-white/85 group-hover:text-energo transition text-left">3. Честная проверка заземления<br><span class="text-[11px] text-muted">3-проводная / 2-проводная сеть</span></span>
+                </button>
+
+                <!-- Vertex 4: Bottom Right -->
+                <button onclick="selectVertex(3)" class="vertex-btn hidden sm:flex sm:absolute sm:bottom-[1%] sm:right-[20%] lg:right-[23%] flex-col items-center gap-2 z-20 focus:outline-none group">
+                    <span class="vertex-dot w-3 h-3 rounded-full bg-white transition"></span>
+                    <span class="vertex-label text-xs sm:text-sm text-white/85 group-hover:text-energo transition">4. Паспорт объекта и схема ГОСТ</span>
+                </button>
+
+                <!-- Vertex 5: Bottom Left -->
+                <button onclick="selectVertex(4)" class="vertex-btn hidden sm:flex sm:absolute sm:bottom-[1%] sm:left-[20%] lg:left-[23%] flex-col items-center gap-2 z-20 focus:outline-none group">
+                    <span class="vertex-dot w-3 h-3 rounded-full bg-white transition"></span>
+                    <span class="vertex-label text-xs sm:text-sm text-white/85 group-hover:text-energo transition">5. Гарантия 6 мес. на соединения</span>
+                </button>
+
+                <!-- Vertex 6: Middle-Low Left -->
+                <button onclick="selectVertex(5)" class="vertex-btn hidden sm:flex sm:absolute sm:top-[58%] sm:left-[0%] lg:left-[3%] items-center gap-3 z-20 focus:outline-none group">
+                    <span class="vertex-label text-xs sm:text-sm text-white/85 group-hover:text-energo transition text-right">6. Подрозетники на гипс<br><span class="text-[11px] text-muted">Без распорных лапок в бетоне</span></span>
+                    <span class="vertex-dot w-3 h-3 rounded-full bg-white transition"></span>
+                </button>
+
+                <!-- Vertex 7: Top Left -->
+                <button onclick="selectVertex(6)" class="vertex-btn hidden sm:flex sm:absolute sm:top-[21%] sm:left-[4%] lg:left-[8%] items-center gap-3 z-20 focus:outline-none group">
+                    <span class="vertex-label text-xs sm:text-sm text-white/85 group-hover:text-energo transition text-right">7. Чистота и прямая связь<br><span class="text-[11px] text-muted">Без посредников и диспетчеров</span></span>
+                    <span class="vertex-dot w-3 h-3 rounded-full bg-white transition"></span>
+                </button>
+
+                <!-- Central Heptagon Cropped Image -->
+                <div class="relative w-[290px] h-[290px] sm:w-[430px] sm:h-[430px] flex items-center justify-center">
+                    <!-- Outer Polygon Border SVG -->
+                    <svg viewBox="0 0 100 100" class="absolute inset-0 w-full h-full pointer-events-none z-10">
+                        <polygon 
+                            points="50,2 90,20 98,62 73,96 27,96 2,62 10,20" 
+                            fill="none" 
+                            stroke="rgba(255,255,255,0.28)" 
+                            stroke-width="0.6"
+                        />
+                    </svg>
+                    
+                    <div class="w-[96%] h-[96%] clip-heptagon overflow-hidden relative bg-surface shadow-2xl">
+                        <img 
+                            id="polygon-img"
+                            src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=85" 
+                            alt="Инженерная система Zhigunov Energo" 
+                            class="w-full h-full object-cover brightness-90 transition-all duration-500"
+                            onerror="this.src='https://placehold.co/600x600/1E1E22/E2FF00?text=ZHIGUNOV+ENERGO'"
+                        >
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
+                        <div class="absolute bottom-7 left-8 right-8 text-center">
+                            <span id="polygon-badge" class="inline-block px-2.5 py-0.5 rounded bg-energo text-obsidian font-mono text-[10px] font-bold uppercase tracking-wider mb-1.5">
+                                СТАНДАРТ №1 • КАБЕЛЬ ГОСТ
+                            </span>
+                            <h3 id="polygon-title" class="text-sm sm:text-base font-bold text-white leading-snug">
+                                Контроль диаметра медной жилы перед монтажом
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Vertex Selector Pills (For small screens) -->
+                <div class="flex sm:hidden flex-wrap justify-center gap-2 mt-6">
+                    <button onclick="selectVertex(0)" class="px-3 py-1.5 rounded-full text-xs bg-white/10 text-white">1. Кабель ГОСТ</button>
+                    <button onclick="selectVertex(1)" class="px-3 py-1.5 rounded-full text-xs bg-white/10 text-white">2. УЗО и Реле</button>
+                    <button onclick="selectVertex(2)" class="px-3 py-1.5 rounded-full text-xs bg-white/10 text-white">3. Заземление</button>
+                    <button onclick="selectVertex(3)" class="px-3 py-1.5 rounded-full text-xs bg-white/10 text-white">4. Паспорт ГОСТ</button>
+                    <button onclick="selectVertex(4)" class="px-3 py-1.5 rounded-full text-xs bg-white/10 text-white">5. Гарантия 6 мес.</button>
+                    <button onclick="selectVertex(5)" class="px-3 py-1.5 rounded-full text-xs bg-white/10 text-white">6. Подрозетники</button>
+                    <button onclick="selectVertex(6)" class="px-3 py-1.5 rounded-full text-xs bg-white/10 text-white">7. Прямой контакт</button>
+                </div>
+            </div>
+
+            <!-- Interactive Detail Panel Below Heptagon -->
+            <div class="mt-4 max-w-2xl mx-auto p-6 rounded-2xl bg-surface/90 border border-white/10 backdrop-blur-md text-center">
+                <p id="polygon-desc" class="text-xs sm:text-sm text-white/85 leading-relaxed">
+                    На рынках вместо честных 2,5 мм² (Ø 1,78 мм) часто продают заниженный кабель ТУ, который плавится при включении чайника и духовки. Мы проверяем сечение кабеля калиброванной линейкой прямо при клиенте и используем только сертифицированный ВВГнг(А)-LS.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ======================== 5. MODULAR PASSPORT SHOWCASE & ENGINEERING RULER CALCULATOR ======================== -->
+    <section id="passports" class="relative py-20 sm:py-28 px-5 sm:px-10 max-w-[1440px] mx-auto border-t border-hairline">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            
+            <!-- Left 5 Columns: Modular Documentation Switcher -->
+            <div class="lg:col-span-5">
+                <div class="inline-block px-3 py-1 rounded bg-energo/15 border border-energo/40 text-energo font-mono text-[11px] font-semibold mb-4">
+                    ЭКСКЛЮЗИВ ZHIGUNOV DESIGN STUDIO
+                </div>
+                <h2 class="editorial-heading text-2xl sm:text-4xl">
+                    <span class="text-white font-medium">ДОКУМЕНТАЦИЯ</span><br>
+                    <span class="text-white/40">КАК У ДОРОГОГО</span><br>
+                    <span class="text-white font-medium">АВТОМОБИЛЯ</span>
+                </h2>
+                <p class="mt-4 text-xs sm:text-sm text-muted leading-relaxed">
+                    После завершения работ вы не остаётесь один на один с непонятными рычажками в щитке. Под каждый объём работ мы разработали свой формат эксплуатационного паспорта:
+                </p>
+
+                <!-- 3 Tier Tabs -->
+                <div class="mt-8 space-y-3">
+                    <button onclick="switchPassport(0)" id="pass-tab-0" class="w-full text-left p-4 rounded-xl border border-energo bg-white/[0.04] transition flex items-start justify-between gap-4">
+                        <div>
+                            <div class="text-xs font-mono text-energo font-bold">УРОВЕНЬ 1 • СБОРКА ЩИТОВ И ЭЛЕКТРИКА ПОД КЛЮЧ</div>
+                            <div class="text-sm font-bold text-white mt-0.5">Полный паспорт электрощита (6 страниц А4)</div>
+                            <div class="text-xs text-muted mt-1">Карта автоматов на русском языке, однолинейная схема по ГОСТ 2.702 для электриков, стикерпак 17,5 мм и алгоритм поиска КЗ.</div>
+                        </div>
+                        <span class="px-2 py-1 rounded bg-energo text-obsidian font-mono text-[10px] font-extrabold shrink-0">6 СТР.</span>
+                    </button>
+
+                    <button onclick="switchPassport(1)" id="pass-tab-1" class="w-full text-left p-4 rounded-xl border border-white/10 bg-surface/50 hover:border-white/30 transition flex items-start justify-between gap-4">
+                        <div>
+                            <div class="text-xs font-mono text-white/60 font-bold">УРОВЕНЬ 2 • ПОДКЛЮЧЕНИЕ ТЕХНИКИ И АВТОМАТОВ</div>
+                            <div class="text-sm font-bold text-white mt-0.5">Средний паспорт оборудования (Книжка 2 стр.)</div>
+                            <div class="text-xs text-muted mt-1">Для варочных панелей, духовых шкафов и бойлеров. Правила выбора сетевых фильтров 3500 Вт, проверка кнопки «Тест» и талон гарантии.</div>
+                        </div>
+                        <span class="px-2 py-1 rounded bg-white/10 text-white font-mono text-[10px] font-bold shrink-0">2 СТР.</span>
+                    </button>
+
+                    <button onclick="switchPassport(2)" id="pass-tab-2" class="w-full text-left p-4 rounded-xl border border-white/10 bg-surface/50 hover:border-white/30 transition flex items-start justify-between gap-4">
+                        <div>
+                            <div class="text-xs font-mono text-white/60 font-bold">УРОВЕНЬ 3 • МЕЛКИЙ РЕМОНТ, РОЗЕТКИ И ЛЮСТРЫ</div>
+                            <div class="text-sm font-bold text-white mt-0.5">Мини-паспорт точки + Шпаргалка ГОСТ (Формат А6)</div>
+                            <div class="text-xs text-muted mt-1">Компактная карточка с отметкой о заземлении (есть/нет), гарантией 6 мес. на соединения и таблицей диаметров медных жил на обороте.</div>
+                        </div>
+                        <span class="px-2 py-1 rounded bg-white/10 text-white font-mono text-[10px] font-bold shrink-0">А6 КАРТА</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right 7 Columns: Live Interactive Preview of the Selected Passport -->
+            <div class="lg:col-span-7 bg-surface border border-white/15 rounded-[24px] p-6 sm:p-8 shadow-2xl">
+                <div class="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <span class="w-3 h-3 rounded-full bg-energo"></span>
+                        <span id="preview-doc-title" class="text-xs sm:text-sm font-mono font-bold text-white">ПРЕВЬЮ: ПАСПОРТ ЭЛЕКТРОЩИТА (6 СТРАНИЦ • ГОСТ Р 50571)</span>
+                    </div>
+                    <span class="text-[11px] font-mono text-muted">Дизайн: Zhigunov Design Studio</span>
+                </div>
+
+                <!-- Dynamic Passport Content Box -->
+                <div id="preview-doc-body" class="mt-6 space-y-5">
+                    <!-- Mockup Header inside preview -->
+                    <div class="bg-[#091326] border-b-4 border-energoWarm rounded-xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                            <span class="px-2 py-0.5 rounded bg-energoWarm text-obsidian text-[10px] font-extrabold uppercase">ЭКСПЛУАТАЦИОННЫЙ ДОКУМЕНТ</span>
+                            <h3 id="mock-title" class="text-lg sm:text-xl font-black text-white mt-1">ПАСПОРТ ЭЛЕКТРОЩИТА</h3>
+                            <p id="mock-sub" class="text-xs text-white/75">Индивидуальная карта линий, однолинейная схема по ГОСТ 2.702 и гарантийное свидетельство</p>
+                        </div>
+                        <div class="text-left sm:text-right font-mono text-xs border-t sm:border-t-0 sm:border-l border-white/15 pt-2 sm:pt-0 sm:pl-4 shrink-0">
+                            <div class="text-energoWarm font-bold">ZHIGUNOV ENERGO</div>
+                            <div class="text-white font-semibold">Алексей Жигунов</div>
+                            <div class="text-white/70">+7 (931) 972-16-57</div>
+                        </div>
+                    </div>
+
+                    <!-- Key Highlights inside Passport -->
+                    <div id="mock-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                        <div class="p-4 rounded-xl bg-obsidian/80 border border-white/10">
+                            <div class="text-energo font-bold mb-1">📋 Что заполнено внутри:</div>
+                            <ul class="space-y-1.5 text-white/80">
+                                <li>• Наглядная таблица: какой автомат за какую комнату отвечает</li>
+                                <li>• Статус сети: <span class="font-mono text-white">Заземление: ☐ есть / ☐ нет (2-пров.)</span></li>
+                                <li>• Чертеж по ГОСТ и номиналы автоматов (B10, C16, C32)</li>
+                                <li>• Полоса цветных наклеек с шагом 17,5 мм на щит</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 rounded-xl bg-obsidian/80 border border-white/10">
+                            <div class="text-energo font-bold mb-1">🛡 Честная гарантия и памятка:</div>
+                            <ul class="space-y-1.5 text-white/80">
+                                <li>• Срок гарантии: <strong>6 месяцев</strong> на качество выполненных соединений и монтажа</li>
+                                <li>• Как за 2 минуты отличить перегруз от КЗ и утечки УЗО</li>
+                                <li>• Почему нельзя включать автомат больше 1–2 раз подряд</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Mini Sticker Strip Preview -->
+                    <div class="p-4 rounded-xl bg-obsidian/90 border border-dashed border-white/20">
+                        <div class="text-[11px] font-mono text-muted mb-2.5">✂ ФИРМЕННАЯ МАРКИРОВОЧНАЯ ПОЛОСА НА ЩИТ (ШАГ МОДУЛЯ 17,5 ММ):</div>
+                        <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 text-center font-mono text-[10px]">
+                            <div class="rounded bg-white text-obsidian p-1.5 font-bold"><div class="bg-red-600 text-white rounded-sm py-0.5 mb-1">QF1•40A</div>⚡ ОБЩИЙ ВВОД</div>
+                            <div class="rounded bg-white text-obsidian p-1.5 font-bold"><div class="bg-amber-500 text-obsidian rounded-sm py-0.5 mb-1">KV1•230V</div>🛡 РЕЛЕ НАПР.</div>
+                            <div class="rounded bg-white text-obsidian p-1.5 font-bold"><div class="bg-blue-600 text-white rounded-sm py-0.5 mb-1">QFD•30mA</div>🛟 УЗО ЗАЩИТА</div>
+                            <div class="rounded bg-white text-obsidian p-1.5 font-bold"><div class="bg-amber-600 text-white rounded-sm py-0.5 mb-1">QF2•10A</div>💡 СВЕТ КОМН.</div>
+                            <div class="rounded bg-white text-obsidian p-1.5 font-bold"><div class="bg-green-600 text-white rounded-sm py-0.5 mb-1">QF4•16A</div>🔌 РОЗЕТКИ</div>
+                            <div class="rounded bg-white text-obsidian p-1.5 font-bold"><div class="bg-red-600 text-white rounded-sm py-0.5 mb-1">QF7•32A</div>🔥 ПЛИТА 32А</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ======================== 6. INTERACTIVE CABLE GAUGE RULER & COST CALCULATOR ======================== -->
+    <section id="calculator" class="relative py-20 sm:py-28 px-5 sm:px-10 max-w-[1440px] mx-auto border-t border-hairline">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+            
+            <!-- Left 6 Columns: Interactive Engineering Cable Gauge Ruler (ГОСТ) -->
+            <div class="lg:col-span-6 bg-surface border border-white/10 rounded-[24px] p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="text-xs font-mono text-energo uppercase tracking-wider">📏 ИНЖЕНЕРНАЯ ЛИНЕЙКА-ШПАРГАЛКА (ГОСТ 31996)</span>
+                        <span class="text-xs font-mono text-muted">~230 В</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white">Подбор сечения медной жилы и автомата под ваш прибор</h3>
+                    <p class="mt-2 text-xs text-muted leading-relaxed">
+                        Выберите планируемую нагрузку или прибор, чтобы увидеть реальный диаметр медной жилы по ГОСТ и номинал защитного автомата, который мы устанавливаем:
+                    </p>
+
+                    <!-- Cable Section Selector Buttons -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mt-6">
+                        <button onclick="selectCable(0)" id="cable-btn-0" class="p-3 rounded-xl border border-white/15 bg-obsidian text-left hover:border-energo transition">
+                            <div class="text-xs font-mono text-muted">СВЕТ</div>
+                            <div class="text-base font-extrabold text-white mt-0.5">1,5 мм²</div>
+                            <div class="text-[11px] font-mono text-energo">Ø 1,38 мм</div>
+                        </button>
+                        <button onclick="selectCable(1)" id="cable-btn-1" class="p-3 rounded-xl border border-energo bg-energo/10 text-left transition">
+                            <div class="text-xs font-mono text-energo">РОЗЕТКИ / ДУХОВКА</div>
+                            <div class="text-base font-extrabold text-white mt-0.5">2,5 мм²</div>
+                            <div class="text-[11px] font-mono text-energo">Ø 1,78 мм</div>
+                        </button>
+                        <button onclick="selectCable(2)" id="cable-btn-2" class="p-3 rounded-xl border border-white/15 bg-obsidian text-left hover:border-energo transition">
+                            <div class="text-xs font-mono text-muted">ВАРОЧНАЯ 2–3 К.</div>
+                            <div class="text-base font-extrabold text-white mt-0.5">4,0 мм²</div>
+                            <div class="text-[11px] font-mono text-energo">Ø 2,26 мм</div>
+                        </button>
+                        <button onclick="selectCable(3)" id="cable-btn-3" class="p-3 rounded-xl border border-white/15 bg-obsidian text-left hover:border-energo transition">
+                            <div class="text-xs font-mono text-muted">ПЛИТА / ВВОД</div>
+                            <div class="text-base font-extrabold text-white mt-0.5">6,0 мм²</div>
+                            <div class="text-[11px] font-mono text-energo">Ø 2,76 мм</div>
+                        </button>
+                    </div>
+
+                    <!-- Visual Wire Cutout & Specs Box -->
+                    <div class="mt-6 p-5 rounded-2xl bg-obsidian border border-white/10">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+                            <div>
+                                <div id="cable-spec-title" class="text-sm sm:text-base font-bold text-white">Кабель ВВГнг(А)-LS 3×2,5 мм² (Медь ГОСТ)</div>
+                                <div id="cable-spec-sub" class="text-xs text-muted mt-0.5">Бытовые розетки, духовые шкафы (до 3,5 кВт), стиральные машины и бойлеры</div>
+                            </div>
+                            <div class="flex items-center gap-3 shrink-0">
+                                <div class="px-3 py-1.5 rounded-lg bg-white/10 font-mono text-xs text-white">
+                                    Автомат: <strong id="cable-spec-breaker" class="text-energo">C16 (16 А)</strong>
+                                </div>
+                                <div class="px-3 py-1.5 rounded-lg bg-energo text-obsidian font-mono text-xs font-extrabold" id="cable-spec-power">
+                                    до 3,5 кВт
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visual SVG Ruler with Calibrated Slots -->
+                        <div class="mt-4">
+                            <svg viewBox="0 0 500 78" class="w-full h-auto">
+                                <rect x="2" y="8" width="496" height="62" rx="8" fill="#18181C" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                                <!-- Millimeter ticks -->
+                                <g stroke="rgba(255,255,255,0.25)" stroke-width="1">
+                                    <line x1="30" y1="8" x2="30" y2="20"/><line x1="50" y1="8" x2="50" y2="16"/><line x1="70" y1="8" x2="70" y2="20"/>
+                                    <line x1="90" y1="8" x2="90" y2="16"/><line x1="110" y1="8" x2="110" y2="20"/><line x1="130" y1="8" x2="130" y2="16"/>
+                                    <line x1="150" y1="8" x2="150" y2="20"/><line x1="170" y1="8" x2="170" y2="16"/><line x1="190" y1="8" x2="190" y2="20"/>
+                                    <line x1="210" y1="8" x2="210" y2="16"/><line x1="230" y1="8" x2="230" y2="20"/><line x1="250" y1="8" x2="250" y2="16"/>
+                                    <line x1="270" y1="8" x2="270" y2="20"/><line x1="290" y1="8" x2="290" y2="16"/><line x1="310" y1="8" x2="310" y2="20"/>
+                                </g>
+                                <!-- 4 Copper Wire Cross-Sections -->
+                                <g>
+                                    <circle cx="85" cy="43" r="6" fill="#D97706" stroke="#FDE047" stroke-width="1.5"/>
+                                    <text x="85" y="63" font-size="8.5" font-family="monospace" fill="#9CA3AF" text-anchor="middle">1.5 (Ø1.38)</text>
+
+                                    <circle cx="185" cy="43" r="8.5" fill="#D97706" stroke="#E2FF00" stroke-width="2"/>
+                                    <text x="185" y="63" font-size="8.5" font-family="monospace" fill="#E2FF00" font-weight="bold" text-anchor="middle">2.5 (Ø1.78)</text>
+
+                                    <circle cx="295" cy="43" r="11" fill="#D97706" stroke="#FDE047" stroke-width="1.5"/>
+                                    <text x="295" y="63" font-size="8.5" font-family="monospace" fill="#9CA3AF" text-anchor="middle">4.0 (Ø2.26)</text>
+
+                                    <circle cx="410" cy="43" r="13.5" fill="#D97706" stroke="#FDE047" stroke-width="1.5"/>
+                                    <text x="410" y="63" font-size="8.5" font-family="monospace" fill="#9CA3AF" text-anchor="middle">6.0 (Ø2.76)</text>
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Warning note about cheap extension cords -->
+                <div class="mt-5 p-4 rounded-xl bg-red-950/30 border border-red-500/30 text-xs text-red-200/90">
+                    <strong>⚠ Осторожно с удлинителями:</strong> На дешёвых шнурах <strong>3×0,75 мм²</strong> заявлено максимум <strong>10 А и 2,2 кВт</strong> — чайник плюс утюг его перегрузят и расплавят. Используйте сетевые фильтры <strong>16 А / 3500 Вт (жила 3×1,5 мм²)</strong> с латунными усиками заземления.
+                </div>
+            </div>
+
+            <!-- Right 6 Columns: Instant Estimate Calculator for Miass -->
+            <div class="lg:col-span-6 bg-surface border border-white/10 rounded-[24px] p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="text-xs font-mono text-energo uppercase tracking-wider">⚡ ОНЛАЙН-КАЛЬКУЛЯТОР СМЕТЫ</span>
+                        <span class="text-xs font-mono text-muted">Г. МИАСС</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white">Рассчитайте ориентировочную стоимость и ваш тип паспорта</h3>
+                    
+                    <div class="mt-6 space-y-5">
+                        <!-- Step 1: Service Category -->
+                        <div>
+                            <label class="block text-xs font-mono uppercase text-muted mb-2">1. Что необходимо сделать?</label>
+                            <select id="calc-service" onchange="updateEstimate()" class="w-full px-4 py-3.5 rounded-xl bg-obsidian border border-white/15 text-sm text-white focus:border-energo focus:outline-none">
+                                <option value="shield" data-price="6500" data-passport="Полный паспорт электрощита (6 стр. А4) + Стикерпак">Сборка / переборка электрощита с автоматикой и маркировкой</option>
+                                <option value="appliance" data-price="2200" data-passport="Средний паспорт оборудования (Книжка 2 стр.)">Подключение варочной панели, духового шкафа или бойлера</option>
+                                <option value="sockets" data-price="1200" data-passport="Мини-паспорт точки А6 + Шпаргалка ГОСТ">Ремонт / установка розеток, подрозетников, выключателей, бра</option>
+                                <option value="diagnostic" data-price="1500" data-passport="Мини-паспорт точки А6 + Акт диагностики">Поиск короткого замыкания (КЗ), утечки тока или срочный выезд</option>
+                                <option value="turnkey" data-price="25000" data-passport="Полный паспорт электрощита (6 стр.) + Схема ГОСТ">Комплексная замена проводки в квартире / доме</option>
+                            </select>
+                        </div>
+
+                        <!-- Step 2: District in Miass -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-mono uppercase text-muted mb-2">2. Район Миасса:</label>
+                                <select id="calc-district" onchange="updateEstimate()" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/15 text-sm text-white focus:border-energo focus:outline-none">
+                                    <option value="Автозавод (Центр)">Автозавод (Центр)</option>
+                                    <option value="Машгородок">Машгородок</option>
+                                    <option value="пос. Строителей">пос. Строителей</option>
+                                    <option value="Старый город / Динамо">Старый город / Динамо</option>
+                                    <option value="Тургояк / Загородный дом">Тургояк / Пригород</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-mono uppercase text-muted mb-2">3. Тип проводки в доме:</label>
+                                <select id="calc-grounding" onchange="updateEstimate()" class="w-full px-4 py-3 rounded-xl bg-obsidian border border-white/15 text-sm text-white focus:border-energo focus:outline-none">
+                                    <option value="Трехпроводная (с заземлением)">Новостройка / Есть заземление</option>
+                                    <option value="Двухпроводная (хрущёвка/брежневка)">Старый фонд (2 провода, без земли)</option>
+                                    <option value="Не знаю, нужна проверка">Не знаю (проверит мастер)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Result Summary Box -->
+                        <div class="p-5 rounded-2xl bg-obsidian border border-energo/40 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-muted">Ориентировочная стоимость работы:</span>
+                                <span id="calc-price-display" class="text-xl sm:text-2xl font-extrabold text-energo font-mono">от 6 500 ₽</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs border-t border-white/10 pt-2.5">
+                                <span class="text-muted">Документ в комплекте:</span>
+                                <span id="calc-passport-display" class="font-semibold text-white text-right">Полный паспорт электрощита (6 стр. А4)</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="text-muted">Личная гарантия мастера:</span>
+                                <span class="font-mono text-energo">6 месяцев на монтаж и соединения</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="sendCalcToModal()" class="mt-6 w-full py-4 rounded-xl bg-energo text-obsidian font-extrabold text-xs sm:text-sm uppercase tracking-wider hover:brightness-110 transition shadow-lg">
+                    Зафиксировать расчёт и связаться с мастером →
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ======================== 7. PANORAMIC BOTTOM SHOWCASE ("ЧТО ZHIGUNOV ENERGO БЕРЁТ НА СЕБЯ") ======================== -->
+    <section id="contacts" class="relative mt-12">
+        
+        <div class="relative w-full min-h-[640px] flex items-end py-16 sm:py-24 px-5 sm:px-10 overflow-hidden">
+            <!-- Panoramic Background Image -->
+            <div class="absolute inset-0 z-0">
+                <img 
+                    src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2000&q=85" 
+                    alt="Инженерное сопровождение Zhigunov Energo в Миассе" 
+                    class="w-full h-full object-cover brightness-75"
+                    onerror="this.src='https://placehold.co/1920x900/121214/E2FF00?text=ZHIGUNOV+ENERGO+MIASS'"
+                >
+                <div class="absolute inset-0 bg-gradient-to-b from-[#141416] via-[#141416]/55 to-[#121214]/95"></div>
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative z-10 w-full max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-end">
+                
+                <!-- Left Column: Title + Floating Thumbnail Card (Like Reference Bottom-Left) -->
+                <div class="lg:col-span-6 space-y-10">
+                    <div>
+                        <h2 class="editorial-heading text-2xl sm:text-4xl lg:text-[40px]">
+                            <span class="text-white font-medium">ЧТО ZHIGUNOV ENERGO</span><br>
+                            <span class="text-white/55">БЕРЁТ</span><br>
+                            <span class="text-white font-medium">НА СЕБЯ</span>
+                        </h2>
+                    </div>
+
+                    <!-- Floating Inset Left Card -->
+                    <div class="max-w-sm bg-[#16161A]/95 backdrop-blur-md border border-white/15 rounded-2xl p-4 shadow-2xl">
+                        <div class="h-36 rounded-xl overflow-hidden mb-3 relative">
+                            <img 
+                                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" 
+                                alt="Инженерная точность Алексея Жигунова" 
+                                class="w-full h-full object-cover"
+                                onerror="this.src='https://placehold.co/500x300/1E1E22/E2FF00?text=МАСТЕР+АЛЕКСЕЙ'"
+                            >
+                            <span class="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded bg-black/70 text-[10px] font-mono text-energo">
+                                Самозанятый (НПД) • С допуском
+                            </span>
+                        </div>
+                        <div class="text-xs font-bold uppercase tracking-wider text-white">ПОЛНЫЙ ЦИКЛ ОТ ЗАКУПКИ ДО СХЕМЫ</div>
+                        <p class="text-[11px] text-muted mt-1 leading-relaxed">
+                            Отбраковываем заниженный кабель ещё в магазине, монтируем чисто и оставляем понятную инструкцию для всей семьи.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Column: Tall Floating Dark Card with Checklist & CTA (Matching Reference Bottom-Right) -->
+                <div class="lg:col-span-5 lg:col-start-8">
+                    <div class="bg-[#16161A]/95 backdrop-blur-xl border border-white/15 rounded-2xl p-6 sm:p-8 shadow-2xl">
+                        <div class="h-36 rounded-xl overflow-hidden mb-5 relative border border-white/10">
+                            <img 
+                                src="https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?auto=format&fit=crop&w=800&q=80" 
+                                alt="Электрощит Zhigunov Energo" 
+                                class="w-full h-full object-cover brightness-90"
+                                onerror="this.src='https://placehold.co/600x320/1E1E22/E2FF00?text=ЩИТ+ПО+ГОСТ'"
+                            >
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-2.5 left-3 text-xs font-mono text-white font-bold">
+                                Прямой телефон: <span class="text-energo">+7 (931) 972-16-57</span>
+                            </div>
+                        </div>
+
+                        <h3 class="text-sm sm:text-base font-bold uppercase tracking-wide text-white">
+                            ИНЖЕНЕРНЫЙ СТАНДАРТ БЕЗ ПОСРЕДНИКОВ
+                        </h3>
+                        <ul class="mt-4 space-y-2.5 text-xs text-white/80">
+                            <li class="flex items-start gap-2">
+                                <span class="text-energo font-bold">•</span>
+                                <span>Точная оценка стоимости по фотографии вашей задачи до начала работ</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-energo font-bold">•</span>
+                                <span>Закупка качественной автоматики и ГОСТ-кабеля с чеками</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-energo font-bold">•</span>
+                                <span>Официальный гарантийный талон (6 месяцев на соединения и монтаж)</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <span class="text-energo font-bold">•</span>
+                                <span>Именной технический паспорт объекта и цветная маркировка щита</span>
+                            </li>
+                        </ul>
+
+                        <div class="mt-6 flex flex-wrap items-center gap-3">
+                            <button onclick="openLeadModal('Заявка из нижнего блока')" class="px-5 py-3 rounded-lg bg-white text-obsidian font-bold text-xs uppercase tracking-wider hover:bg-energo transition">
+                                Вызвать мастера
+                            </button>
+                            <a href="tel:+79319721657" class="px-4 py-3 rounded-lg bg-white/10 text-white font-mono text-xs hover:bg-white/20 transition">
+                                Позвонить напрямую
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Minimalist Architectural Footer -->
+        <footer class="bg-[#0E0E10] border-t border-white/10 py-10 px-5 sm:px-10">
+            <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 text-xs text-muted">
+                <div class="flex items-center gap-3">
+                    <span class="w-2.5 h-2.5 rounded-full bg-energo"></span>
+                    <span class="font-bold text-white tracking-wider">ZHIGUNOV ENERGO</span>
+                    <span>•</span>
+                    <span>жигунов-энерго.рф</span>
+                    <span>•</span>
+                    <span>г. Миасс, Челябинская обл.</span>
+                </div>
+                <div class="flex flex-wrap items-center gap-6">
+                    <span>Мастер Алексей Жигунов (Самозанятый НПД)</span>
+                    <a href="tel:+79319721657" class="text-white font-mono hover:text-energo transition">+7 (931) 972-16-57</a>
+                    <span class="text-white/60">Design &amp; Documentation by <strong class="text-white">Zhigunov Design Studio</strong></span>
+                </div>
+            </div>
+        </footer>
+    </section>
+
+
+    <!-- ======================== LEAD CAPTURE MODAL (NO ALERTS!) ======================== -->
+    <div id="lead-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="relative w-full max-w-md bg-[#18181C] border border-white/15 rounded-2xl p-6 sm:p-8 shadow-2xl">
+            <button onclick="closeLeadModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 text-white/70 hover:text-white flex items-center justify-center">
+                ✕
+            </button>
+
+            <div class="text-[11px] font-mono text-energo uppercase tracking-wider">ПРЯМАЯ СВЯЗЬ С МАСТЕРОМ АЛЕКСЕЕМ</div>
+            <h3 class="text-xl font-bold text-white mt-1">Оценка задачи по фото или вызов в Миассе</h3>
+            <p id="modal-context-label" class="text-xs text-muted mt-1">Мы свяжемся с вами без посредников и назовём честную стоимость до выезда.</p>
+
+            <form onsubmit="submitLeadForm(event)" class="mt-5 space-y-4">
+                <div>
+                    <label class="block text-xs text-white/75 mb-1">Ваше имя</label>
+                    <input type="text" id="lead-name" required placeholder="Например, Александр" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-sm text-white focus:border-energo focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-white/75 mb-1">Ваш телефон для связи</label>
+                    <input type="tel" id="lead-phone" required placeholder="+7 (9__) ___-__-__" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-sm text-white focus:border-energo focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs text-white/75 mb-1">Кратко опишите задачу и район Миасса</label>
+                    <textarea id="lead-task" rows="3" placeholder="Например: Машгородок, нужно подключить варочную панель и проверить автомат в щитке" class="w-full px-3.5 py-2.5 rounded-xl bg-obsidian border border-white/15 text-sm text-white focus:border-energo focus:outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-energo text-obsidian font-extrabold text-xs uppercase tracking-wider hover:brightness-110 transition">
+                    Сформировать заявку мастеру
+                </button>
+            </form>
+
+            <!-- Confirmation Message Box (Hidden until submit) -->
+            <div id="lead-success" class="hidden mt-4 p-4 rounded-xl bg-green-950/60 border border-green-500/40 text-xs text-green-200 space-y-2">
+                <div class="font-bold text-white">✅ Заявка скопирована в буфер и готова к отправке!</div>
+                <p>Текст вашей задачи скопирован. Вы можете сразу позвонить Алексею по номеру <a href="tel:+79319721657" class="underline font-bold text-energo">+7 (931) 972-16-57</a> или отправить скопированное сообщение в Telegram / WhatsApp.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ======================== INTERACTIVE JAVASCRIPT LOGIC ======================== -->
+    <script>
+        // 1. Data for the 7 Polygon Vertices ("Системная защита")
+        const vertexData = [
+            {
+                badge: "СТАНДАРТ №1 • КАБЕЛЬ ГОСТ",
+                title: "Контроль диаметра медной жилы перед монтажом",
+                desc: "На рынках вместо честных 2,5 мм² (Ø 1,78 мм) часто продают заниженный кабель ТУ, который плавится при включении чайника и духовки. Мы проверяем сечение кабеля калиброванной линейкой прямо при клиенте и используем только сертифицированный ВВГнг(А)-LS.",
+                img: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=85"
+            },
+            {
+                badge: "СТАНДАРТ №2 • ТРЁХУРОВНЕВАЯ ЗАЩИТА",
+                title: "Автоматы от КЗ + УЗО 30 мА от удара током + Реле напряжения",
+                desc: "Обычный автомат НЕ спасает человека от удара током, а технику — от скачка 380 Вольт при отгорании нуля. Мы ставим реле контроля напряжения с цифровым дисплеем и селективные УЗО, а также обучаем раз в месяц проверять пружину кнопкой «Тест».",
+                img: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1000&q=85"
+            },
+            {
+                badge: "СТАНДАРТ №3 • ЧЕСТНАЯ ДИАГНОСТИКА ЗАЗЕМЛЕНИЯ",
+                title: "Без ложных обещаний в домах старого фонда Миасса",
+                desc: "Во многих хрущёвках и брежневках Миасса двухпроводная сеть без контура заземления. Мы не пишем липовое «Заземление проверено», а честно фиксируем в паспорте фактическую схему (есть / нет) и подбираем правильную дифференциальную защиту.",
+                img: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1000&q=85"
+            },
+            {
+                badge: "СТАНДАРТ №4 • ИМЕННОЙ ПАСПОРТ И СХЕМА ГОСТ",
+                title: "Понятная карта щита для семьи + чертёж для любого электрика",
+                desc: "Вы получаете фирменный паспорт объекта (разработка Zhigunov Design Studio): от мини-карточки А6 при мелком ремонте до 6-страничного досье со стикерпаком и однолинейной схемой по ГОСТ 2.702.",
+                img: "https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?auto=format&fit=crop&w=1000&q=85"
+            },
+            {
+                badge: "СТАНДАРТ №5 • ЛИЧНАЯ ГАРАНТИЯ 6 МЕСЯЦЕВ",
+                title: "Прозрачная юридическая ответственность самозанятого мастера",
+                desc: "Мы даём 6 месяцев официальной гарантии на качество выполненных нами соединений и монтажа. Если в зоне нашего подключения ослабнет зажим или появится нагрев — приедем и устраним бесплатно.",
+                img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=85"
+            },
+            {
+                badge: "СТАНДАРТ №6 • НАДЁЖНАЯ ПОСАДКА РОЗЕТОК",
+                title: "Никаких вываливающихся розеток на старых распорных лапках",
+                desc: "Если старая розетка в бетонной стене держалась на железных «лапках» и вывалилась — мы вмонтируем глубокий пластиковый подрозетник на строительный гипс и закрепим механизм на саморезы.",
+                img: "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=1000&q=85"
+            },
+            {
+                badge: "СТАНДАРТ №7 • ПРЯМОЙ КОНТАКТ БЕЗ НАКРУТОК",
+                title: "Вы общаетесь лично с мастером Алексеем Жигуновым",
+                desc: "Никаких агрегаторов и диспетчеров, забирающих 50% стоимости заказа. Вы присылаете фото задачи на +7 (931) 972-16-57, сразу узнаёте честную цену и получаете аккуратную работу в оговорённое время.",
+                img: "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1000&q=85"
+            }
+        ];
+
+        function selectVertex(index) {
+            const buttons = document.querySelectorAll('.vertex-btn');
+            buttons.forEach((btn, idx) => {
+                if (idx === index) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+
+            const item = vertexData[index];
+            document.getElementById('polygon-badge').textContent = item.badge;
+            document.getElementById('polygon-title').textContent = item.title;
+            document.getElementById('polygon-desc').textContent = item.desc;
+            document.getElementById('polygon-img').src = item.img;
+        }
+
+        // 2. Data for the 3-Tier Passport Switcher
+        const passportsData = [
+            {
+                header: "ПРЕВЬЮ: ПАСПОРТ ЭЛЕКТРОЩИТА (6 СТРАНИЦ • ГОСТ Р 50571)",
+                title: "ПАСПОРТ ЭЛЕКТРОЩИТА (6 СТР.)",
+                sub: "Выдаётся при сборке электрощитов и комплексном монтаже проводки",
+                leftList: [
+                    "• Наглядная таблица: какой автомат за какую комнату отвечает",
+                    "• Статус сети: Заземление: ☐ есть / ☐ нет (двухпроводная сеть)",
+                    "• Однолинейная расчётная схема по ГОСТ 2.702 для специалистов",
+                    "• Комплект цветной маркировки автоматов с шагом 17,5 мм"
+                ],
+                rightList: [
+                    "• Гарантия 6 месяцев на качество выполненных соединений и монтажа",
+                    "• Пошаговый алгоритм: как за 2 минуты найти КЗ или утечку УЗО",
+                    "• Правила выбора сетевых фильтров (16А / 3500 Вт, жила 3×1,5 мм²)",
+                    "• QR-коды для быстрой связи с мастером Алексеем"
+                ]
+            },
+            {
+                header: "ПРЕВЬЮ: ПАСПОРТ ОБОРУДОВАНИЯ (КНИЖКА 2 СТРАНИЦЫ А4)",
+                title: "ПАСПОРТ ОБОРУДОВАНИЯ (2 СТР.)",
+                sub: "Выдаётся при подключении варочных панелей, духовых шкафов, бойлеров и автоматов",
+                leftList: [
+                    "• Карточка подключения прибора с номиналом защитного автомата",
+                    "• Раздельные требования: варочная 4–6 мм² (32А), духовка 2,5 мм² (16А)",
+                    "• Наглядное объяснение работы заземления и кнопки «Тест» на УЗО",
+                    "• Сравнение опасного тройника (0,75 мм² / 2,2 кВт) и фильтра 3500 Вт"
+                ],
+                rightList: [
+                    "• Официальный гарантийный талон на 6 месяцев (соединения и монтаж)",
+                    "• Памятка: почему без заземления корпус прибора ждёт касания при пробое",
+                    "• Запрет на включение выбитого автомата более 1–2 раз подряд",
+                    "• Прямой контакт мастера +7 (931) 972-16-57"
+                ]
+            },
+            {
+                header: "ПРЕВЬЮ: МИНИ-ПАСПОРТ ТОЧКИ (КАРТОЧКА ФОРМАТА А6)",
+                title: "МИНИ-ПАСПОРТ ТОЧКИ (ФОРМАТ А6)",
+                sub: "Выдаётся при замене розеток, выключателей, установке люстр и мелком ремонте",
+                leftList: [
+                    "• Компактная квитанция: адрес, дата, вид выполненной работы",
+                    "• Честная отметка: Заземление ☐ есть (3 провода) / ☐ нет (2 провода)",
+                    "• На обороте — шпаргалка сечений и диаметров медных жил ГОСТ",
+                    "• Удобно хранить в ящике с инструментами или прямо на щитке"
+                ],
+                rightList: [
+                    "• Гарантия 6 месяцев исключительно на выполненные соединения",
+                    "• Предупреждение о перегрузке дешёвых шнуров 3×0,75 мм² (до 2,2 кВт)",
+                    "• Краткий чек-лист проверки при отключении света в комнате",
+                    "• Фирменный дизайн Zhigunov Design Studio"
+                ]
+            }
+        ];
+
+        function switchPassport(tierIndex) {
+            for (let i = 0; i < 3; i++) {
+                const tab = document.getElementById('pass-tab-' + i);
+                if (i === tierIndex) {
+                    tab.className = "w-full text-left p-4 rounded-xl border border-energo bg-white/[0.04] transition flex items-start justify-between gap-4";
+                } else {
+                    tab.className = "w-full text-left p-4 rounded-xl border border-white/10 bg-surface/50 hover:border-white/30 transition flex items-start justify-between gap-4";
+                }
+            }
+
+            const d = passportsData[tierIndex];
+            document.getElementById('preview-doc-title').textContent = d.header;
+            document.getElementById('mock-title').textContent = d.title;
+            document.getElementById('mock-sub').textContent = d.sub;
+
+            const grid = document.getElementById('mock-grid');
+            grid.innerHTML = `
+                <div class="p-4 rounded-xl bg-obsidian/80 border border-white/10">
+                    <div class="text-energo font-bold mb-1">📋 Что внутри документа:</div>
+                    <ul class="space-y-1.5 text-white/80">
+                        ${d.leftList.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="p-4 rounded-xl bg-obsidian/80 border border-white/10">
+                    <div class="text-energo font-bold mb-1">🛡 Безопасность и гарантия:</div>
+                    <ul class="space-y-1.5 text-white/80">
+                        ${d.rightList.map(item => `<li>${item}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        // 3. Data for Interactive Engineering Cable Gauge Ruler
+        const cableSpecs = [
+            {
+                title: "Кабель ВВГнг(А)-LS 3×1,5 мм² (Ø жилы 1,38 мм)",
+                sub: "Линии освещения, люстры, бра, светодиодная подсветка",
+                breaker: "B10 / C10 (10 А)",
+                power: "до 2,2 кВт"
+            },
+            {
+                title: "Кабель ВВГнг(А)-LS 3×2,5 мм² (Ø жилы 1,78 мм)",
+                sub: "Бытовые розетки, духовые шкафы (до 3,5 кВт), стиральные машины и бойлеры",
+                breaker: "C16 (16 А)",
+                power: "до 3,5 кВт"
+            },
+            {
+                title: "Кабель ВВГнг(А)-LS 3×4,0 мм² (Ø жилы 2,26 мм)",
+                sub: "Варочные панели на 2–3 конфорки, мощные проточные водонагреватели",
+                breaker: "C25 (25 А)",
+                power: "до 5,5 кВт"
+            },
+            {
+                title: "Кабель ВВГнг(А)-LS 3×6,0 мм² (Ø жилы 2,76 мм)",
+                sub: "Полноразмерные варочные панели (до 7,2 кВт), электроплиты и ввод в квартиру",
+                breaker: "C32 (32 А)",
+                power: "до 7,2 кВт"
+            }
+        ];
+
+        function selectCable(idx) {
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById('cable-btn-' + i);
+                if (i === idx) {
+                    btn.className = "p-3 rounded-xl border border-energo bg-energo/10 text-left transition";
+                } else {
+                    btn.className = "p-3 rounded-xl border border-white/15 bg-obsidian text-left hover:border-energo transition";
+                }
+            }
+            const spec = cableSpecs[idx];
+            document.getElementById('cable-spec-title').textContent = spec.title;
+            document.getElementById('cable-spec-sub').textContent = spec.sub;
+            document.getElementById('cable-spec-breaker').textContent = spec.breaker;
+            document.getElementById('cable-spec-power').textContent = spec.power;
+        }
+
+        // 4. Cost & Passport Calculator
+        function updateEstimate() {
+            const select = document.getElementById('calc-service');
+            const option = select.options[select.selectedIndex];
+            const basePrice = parseInt(option.getAttribute('data-price'), 10);
+            const passportName = option.getAttribute('data-passport');
+
+            document.getElementById('calc-price-display').textContent = 'от ' + basePrice.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('calc-passport-display').textContent = passportName;
+        }
+
+        function sendCalcToModal() {
+            const serviceSelect = document.getElementById('calc-service');
+            const serviceText = serviceSelect.options[serviceSelect.selectedIndex].text;
+            const district = document.getElementById('calc-district').value;
+            const grounding = document.getElementById('calc-grounding').value;
+
+            const prefill = `Услуга: ${serviceText}. Район: ${district}. Сеть: ${grounding}.`;
+            openLeadModal('Расчёт из онлайн-калькулятора', prefill);
+        }
+
+        // 5. Lead Modal & Clipboard Handler
+        function openLeadModal(sourceTitle, prefillText = '') {
+            const modal = document.getElementById('lead-modal');
+            document.getElementById('modal-context-label').textContent = sourceTitle;
+            document.getElementById('lead-success').classList.add('hidden');
+            if (prefillText) {
+                document.getElementById('lead-task').value = prefillText;
+            }
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeLeadModal() {
+            const modal = document.getElementById('lead-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function submitLeadForm(e) {
+            e.preventDefault();
+            const name = document.getElementById('lead-name').value;
+            const phone = document.getElementById('lead-phone').value;
+            const task = document.getElementById('lead-task').value;
+
+            const summary = `Заявка с сайта жигунов-энерго.рф\nИмя: ${name}\nТелефон: ${phone}\nЗадача: ${task}`;
+
+            // Copy to clipboard using compatible execCommand
+            const tempInput = document.createElement('textarea');
+            tempInput.value = summary;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {}
+            document.body.removeChild(tempInput);
+
+            document.getElementById('lead-success').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
