@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zhigunov Design Studio — Портфолио '26</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        bg: "hsl(var(--bg))",
+                        surface: "hsl(var(--surface))",
+                        "text-primary": "hsl(var(--text))",
+                        muted: "hsl(var(--muted))",
+                        stroke: "hsl(var(--stroke))",
+                    },
+                    fontFamily: {
+                        body: ['Inter', 'sans-serif'],
+                        display: ['Instrument Serif', 'Cormorant Garamond', 'serif'],
+                    },
+                    keyframes: {
+                        "scroll-down": {
+                            "0%": { transform: "translateY(-100%)" },
+                            "100%": { transform: "translateY(200%)" }
+                        },
+                        "role-fade-in": {
+                            "0%": { opacity: "0", transform: "translateY(8px)" },
+                            "100%": { opacity: "1", transform: "translateY(0)" }
+                        },
+                        "gradient-shift": {
+                            "0%": { backgroundPosition: "0% 50%" },
+                            "50%": { backgroundPosition: "100% 50%" },
+                            "100%": { backgroundPosition: "0% 50%" }
+                        }
+                    },
+                    animation: {
+                        "scroll-down": "scroll-down 1.5s ease-in-out infinite",
+                        "role-fade-in": "role-fade-in 0.4s ease-out forwards",
+                        "gradient-shift": "gradient-shift 6s ease infinite"
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- HLS.js -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- React & ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10.16.5/dist/framer-motion.js"></script>
+    <!-- Babel Standalone (supports TypeScript + JSX) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        :root {
+            --bg: 0 0% 4%;
+            --surface: 0 0% 8%;
+            --text: 0 0% 96%;
+            --muted: 0 0% 53%;
+            --stroke: 0 0% 12%;
+            --accent: 0 0% 96%;
+            --font-body: 'Inter', sans-serif;
+            --font-display: 'Instrument Serif', 'Cormorant Garamond', serif;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: hsl(var(--bg));
+            color: hsl(var(--text));
+            font-family: var(--font-body);
+            overflow-x: hidden;
+        }
+        .accent-gradient {
+            background: linear-gradient(90deg, #89AACC 0%, #4E85BF 100%);
+        }
+        .accent-gradient-reverse {
+            background: linear-gradient(270deg, #89AACC 0%, #4E85BF 100%);
+        }
+        .animated-gradient-border {
+            background: linear-gradient(90deg, #89AACC, #4E85BF, #89AACC);
+            background-size: 200% 200%;
+            animation: gradient-shift 6s ease infinite;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: hsl(var(--bg));
+        }
+        ::-webkit-scrollbar-thumb {
+            background: hsl(var(--stroke));
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: hsl(var(--muted));
+        }
+    </style>
+</head>
+<body class="bg-bg text-text-primary font-body antialiased selection:bg-[#89AACC] selection:text-black">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { motion, AnimatePresence } = Motion;
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- DATA ---
+        const PROJECTS = [
+            {
+                id: "kultura-roasters",
+                title: "Культура Обжарки",
+                category: "Айдентика и Упаковка",
+                year: "2026",
+                client: "Kultura Coffee Lab",
+                description: "Комплексная визуальная система, серия тактильной упаковки и кастомная акцидентная типографика для спешелти-обжарщиков.",
+                challenge: "Выделить локальный крафтовый продукт на перенасыщенном рынке спешелти-кофе, сохранив архитектурную строгость и премиальность.",
+                solution: "Разработали модульную сетку этикеток с цветным тиснением фольгой, тактильной бумагой хлопкового переплета и контрастной антиквой.",
+                image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=1200&q=85",
+                span: "md:col-span-7",
+                aspect: "aspect-[16/10]"
+            },
+            {
+                id: "forma-architecture",
+                title: "Бюро ФОРМА",
+                category: "Редакционный Дизайн",
+                year: "2025",
+                client: "Архитектурное бюро FORMA",
+                description: "Коллекционная монография, каталог выставочных павильонов и строгая швейцарская навигационная айдентика.",
+                challenge: "Передать монументальность бетонных форм и светотени в печатном многостраничном издании и визуальной среде.",
+                solution: "Создали бескомпромиссную микротипографику, открытый книжный переплет и систему плакатов с использованием дуотон-печати.",
+                image: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=900&q=85",
+                span: "md:col-span-5",
+                aspect: "aspect-[4/5]"
+            },
+            {
+                id: "lumina-festival",
+                title: "Фестиваль Света",
+                category: "Плакат и Кинетическая Айдентика",
+                year: "2025",
+                client: "Lumina Art Foundation",
+                description: "Генеративная айдентика, серия коллекционных шелкографских плакатов и мерч для международного биеннале медиаискусства.",
+                challenge: "Создать динамический фирменный стиль, который одинаково выразительно работает в крупноформатной уличной печати и на цифровых носителях.",
+                solution: "Спроектировали вариативный гротеск, реагирующий на звуковые частоты, и отпечатали лимитированную серию постеров флуоресцентными пантонами.",
+                image: "https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=900&q=85",
+                span: "md:col-span-5",
+                aspect: "aspect-[4/5]"
+            },
+            {
+                id: "nordic-botanica",
+                title: "Северная Ботаника",
+                category: "Брендинг и Арт-дирекшн",
+                year: "2026",
+                client: "Nordic Apothecary",
+                description: "Создание бренда селективной органической косметики: от нейминга и формы флаконов до фэшн-съемки и гайдбука.",
+                challenge: "Уйти от шаблонных «эко-клише» и создать холодный, аптечный, но чувственный визуальный язык высокого класса.",
+                solution: "Соединили строгую лабораторную верстку с ботаническими гравюрами в современной интерпретации и минималистичными флаконами из темного стекла.",
+                image: "https://images.unsplash.com/photo-1608248597359-0e6d526a6c18?auto=format&fit=crop&w=1200&q=85",
+                span: "md:col-span-7",
+                aspect: "aspect-[16/10]"
+            }
+        ];
+
+        const JOURNAL_ENTRIES = [
+            {
+                id: "swiss-grid-modern",
+                title: "Модульная сетка как визуальный каркас бренда",
+                readTime: "4 мин чтения",
+                date: "14 фев 2026",
+                excerpt: "Почему швейцарская типографика середины XX века остается главным инструментом в современном брендинге.",
+                content: "Модульная сетка — это не ограничение свободы дизайнера, а архитектура смысла. Когда бренд выстроен на математически выверенных пропорциях, любой носитель — от визитной карточки и упаковки до фасадной вывески — считывается мгновенно и сохраняет безупречный ритм.",
+                image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=400&q=80"
+            },
+            {
+                id: "tactile-packaging",
+                title: "Тактильность в эпоху тотального диджитала",
+                readTime: "6 мин чтения",
+                date: "08 янв 2026",
+                excerpt: "Как плотность бумаги, слепое тиснение и выбор переплетного материала формируют добавленную стоимость.",
+                content: "В мире, где мы взаимодействуем со стеклянными экранами по десять часов в день, физический контакт с упаковкой становится роскошью. Шероховатый хлопок, глубокий конгрев и несовершенство крафтовой печати создают эмоциональную связь за доли секунды.",
+                image: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=400&q=80"
+            },
+            {
+                id: "serif-renaissance",
+                title: "Ренессанс контрастной антиквы в айдентике",
+                readTime: "5 мин чтения",
+                date: "22 ноя 2025",
+                excerpt: "Сочетание классических редакционных шрифтов с геометрическими гротесками для создания характера.",
+                content: "Десятилетие нейтральных санс-серифов сделало логотипы брендов неотличимыми друг от друга. Возвращение выразительных курсивных антикв с каллиграфической пластикой возвращает графическому дизайну голос, драматургию и историческую глубину.",
+                image: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?auto=format&fit=crop&w=400&q=80"
+            },
+            {
+                id: "art-direction-systems",
+                title: "Арт-дирекшн: от метафоры к дизайн-системе",
+                readTime: "8 мин чтения",
+                date: "19 сен 2025",
+                excerpt: "Как мы в Zhigunov Design Studio превращаем абстрактные смыслы бизнеса в твердую графическую форму.",
+                content: "Сильная айдентика начинается не с выбора шрифта или цвета, а с поиска точной визуальной метафоры. Мы исследуем контекст, культуру и пластику продукта, чтобы создать графическую систему, которая будет жить и масштабироваться годами.",
+                image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=400&q=80"
+            }
+        ];
+
+        const EXPLORATIONS = [
+            { id: 1, title: "Плакатная Серия №04", tag: "Шелкография", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=700&q=80", rotation: "-rotate-6", speed: -180 },
+            { id: 2, title: "Акцидентный Гротеск", tag: "Шрифтовой Дизайн", img: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=700&q=80", rotation: "rotate-3", speed: -260 },
+            { id: 3, title: "Растровая Топология", tag: "Печатная Графика", img: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&w=700&q=80", rotation: "-rotate-3", speed: -140 },
+            { id: 4, title: "Монограмма & Тиснение", tag: "Упаковка", img: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=700&q=80", rotation: "rotate-6", speed: -240 },
+            { id: 5, title: "Хроматический Контраст", tag: "Арт-дирекшн", img: "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=700&q=80", rotation: "-rotate-4", speed: -300 },
+            { id: 6, title: "Модульная Сетка 09", tag: "Книжная Верстка", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=700&q=80", rotation: "rotate-4", speed: -190 }
+        ];
+
+        // --- SECTION 1: LOADING SCREEN ---
+        function LoadingScreen({ onComplete }) {
+            const [count, setCount] = useState(0);
+            const [wordIndex, setWordIndex] = useState(0);
+            const words = ["Смысл", "Форма", "Эстетика"];
+
+            useEffect(() => {
+                let startTime = null;
+                const duration = 2700;
+                let rafId;
+
+                const step = (timestamp) => {
+                    if (!startTime) startTime = timestamp;
+                    const elapsed = timestamp - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const current = Math.floor(progress * 100);
+                    setCount(current);
+
+                    if (progress < 1) {
+                        rafId = requestAnimationFrame(step);
+                    } else {
+                        setTimeout(() => {
+                            onComplete();
+                        }, 400);
+                    }
+                };
+
+                rafId = requestAnimationFrame(step);
+                return () => cancelAnimationFrame(rafId);
+            }, [onComplete]);
+
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setWordIndex((prev) => (prev + 1) % words.length);
+                }, 900);
+                return () => clearInterval(interval);
+            }, []);
+
+            return (
+                <motion.div
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } }}
+                    className="fixed inset-0 z-[9999] bg-bg flex flex-col justify-between p-6 md:p-12 select-none"
+                >
+                    {/* Top-left Portfolio label */}
+                    <div className="flex justify-between items-start">
+                        <motion.span
+                            initial={{ y: -20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 0.6, ease: "easeOut" }}
+                            className="text-xs text-muted uppercase tracking-[0.3em]"
+                        >
+                            Zhigunov Design Studio
+                        </motion.span>
+                    </div>
+
+                    {/* Center rotating words */}
+                    <div className="flex items-center justify-center my-auto">
+                        <AnimatePresence mode="wait">
+                            <motion.span
+                                key={words[wordIndex]}
+                                initial={{ y: 20, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: -20, opacity: 0 }}
+                                transition={{ duration: 0.32, ease: "easeOut" }}
+                                className="text-4xl md:text-6xl lg:text-7xl font-display italic text-text-primary/80"
+                            >
+                                {words[wordIndex]}
+                            </motion.span>
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Bottom-right counter & progress bar */}
+                    <div className="w-full">
+                        <div className="flex justify-end mb-4">
+                            <span className="text-6xl md:text-8xl lg:text-9xl font-display text-text-primary tabular-nums leading-none">
+                                {String(count).padStart(3, "0")}
+                            </span>
+                        </div>
+                        <div className="w-full h-[3px] bg-stroke/50 overflow-hidden">
+                            <div
+                                className="h-full w-full accent-gradient origin-left transition-transform duration-75"
+                                style={{
+                                    transform: `scaleX(${count / 100})`,
+                                    boxShadow: "0 0 8px rgba(137, 170, 204, 0.35)"
+                                }}
+                            />
+                        </div>
+                    </div>
+                </motion.div>
+            );
+        }
+
+        // --- HLS VIDEO BACKGROUND ---
+        function HlsVideo({ src, flipped = false }) {
+            const videoRef = useRef(null);
+
+            useEffect(() => {
+                const video = videoRef.current;
+                if (!video) return;
+
+                let hls;
+                if (window.Hls && window.Hls.isSupported()) {
+                    hls = new window.Hls({ enableWorker: true });
+                    hls.loadSource(src);
+                    hls.attachMedia(video);
+                    hls.on(window.Hls.Events.MANIFEST_PARSED, () => {
+                        video.play().catch(() => {});
+                    });
+                } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+                    video.src = src;
+                    video.addEventListener("loadedmetadata", () => {
+                        video.play().catch(() => {});
+                    });
+                }
+
+                return () => {
+                    if (hls) hls.destroy();
+                };
+            }, [src]);
+
+            return (
+                <video
+                    ref={videoRef}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={`absolute top-1/2 left-1/2 min-w-full min-h-full object-cover -translate-x-1/2 -translate-y-1/2 pointer-events-none ${
+                        flipped ? "scale-y-[-1]" : ""
+                    }`}
+                />
+            );
+        }
+
+        // --- NAVBAR ---
+        function Navbar({ activeSection, onNavigate, onOpenResume }) {
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const onScroll = () => setScrolled(window.scrollY > 100);
+                window.addEventListener("scroll", onScroll, { passive: true });
+                return () => window.removeEventListener("scroll", onScroll);
+            }, []);
+
+            const navItems = [
+                { label: "Главная", id: "home" },
+                { label: "Кейсы", id: "work" },
+                { label: "О студии", id: "resume" }
+            ];
+
+            return (
+                <div className="fixed top-0 left-0 right-0 z-50 flex justify-center pt-4 md:pt-6 px-4">
+                    <nav
+                        className={`inline-flex items-center rounded-full backdrop-blur-md border border-white/10 bg-surface px-2 py-2 transition-shadow duration-300 ${
+                            scrolled ? "shadow-md shadow-black/10" : ""
+                        }`}
+                    >
+                        {/* 1. Logo: 9x9 circle with accent gradient border (reverses on hover) + "ZD" */}
+                        <button
+                            onClick={() => onNavigate("home")}
+                            aria-label="Наверх"
+                            className="group relative w-9 h-9 rounded-full p-[1.5px] accent-gradient hover:accent-gradient-reverse transition-transform duration-300 hover:scale-110 flex items-center justify-center"
+                        >
+                            <span className="w-full h-full rounded-full bg-bg flex items-center justify-center">
+                                <span className="font-display italic text-[13px] text-text-primary leading-none">
+                                    ZD
+                                </span>
+                            </span>
+                        </button>
+
+                        {/* 2. Divider */}
+                        <div className="hidden sm:block w-px h-5 bg-stroke mx-1" />
+
+                        {/* 3. Nav links */}
+                        <div className="flex items-center gap-0.5">
+                            {navItems.map((item) => {
+                                const isActive = activeSection === item.id;
+                                return (
+                                    <button
+                                        key={item.id}
+                                        onClick={() =>
+                                            item.id === "resume" ? onOpenResume() : onNavigate(item.id)
+                                        }
+                                        className={`text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition-colors ${
+                                            isActive
+                                                ? "text-text-primary bg-stroke/50"
+                                                : "text-muted hover:text-text-primary hover:bg-stroke/50"
+                                        }`}
+                                    >
+                                        {item.label}
+                                    </button>
+                                );
+                            })}
+                        </div>
+
+                        {/* 4. Divider */}
+                        <div className="hidden sm:block w-px h-5 bg-stroke mx-1" />
+
+                        {/* 5. "Связаться" button */}
+                        <a
+                            href="#contact"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                onNavigate("contact");
+                            }}
+                            className="group relative text-xs sm:text-sm rounded-full"
+                        >
+                            <span
+                                className="absolute rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                style={{ inset: "-2px" }}
+                            />
+                            <span className="relative z-10 inline-flex items-center gap-1 bg-surface rounded-full backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 text-text-primary">
+                                <span>Обсудить</span>
+                                <span className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
+                                    ↗
+                                </span>
+                            </span>
+                        </a>
+                    </nav>
+                </div>
+            );
+        }
+
+        // --- SECTION 2: HERO ---
+        function HeroSection({ isLoaded, onNavigate }) {
+            const roles = ["Айдентика", "Типографика", "Упаковка", "Арт-дирекшн"];
+            const [roleIndex, setRoleIndex] = useState(0);
+            const heroRef = useRef(null);
+
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    setRoleIndex((prev) => (prev + 1) % roles.length);
+                }, 2000);
+                return () => clearInterval(interval);
+            }, []);
+
+            useEffect(() => {
+                if (!isLoaded) return;
+                const ctx = gsap.context(() => {
+                    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+                    tl.fromTo(
+                        ".name-reveal",
+                        { opacity: 0, y: 50 },
+                        { opacity: 1, y: 0, duration: 1.2, delay: 0.1 }
+                    );
+                    tl.fromTo(
+                        ".blur-in",
+                        { opacity: 0, filter: "blur(10px)", y: 20 },
+                        {
+                            opacity: 1,
+                            filter: "blur(0px)",
+                            y: 0,
+                            duration: 1,
+                            stagger: 0.1
+                        },
+                        0.3
+                    );
+                }, heroRef);
+
+                return () => ctx.revert();
+            }, [isLoaded]);
+
+            return (
+                <section
+                    id="home"
+                    ref={heroRef}
+                    className="relative w-full h-screen min-h-[700px] flex items-center justify-center overflow-hidden bg-bg"
+                >
+                    {/* Background Video */}
+                    <div className="absolute inset-0 overflow-hidden">
+                        <HlsVideo src="https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8" />
+                        <div className="absolute inset-0 bg-black/20" />
+                        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-bg to-transparent" />
+                    </div>
+
+                    {/* Centered Hero Content */}
+                    <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-5xl mx-auto">
+                        <p className="blur-in text-xs text-muted uppercase tracking-[0.3em] mb-8">
+                            СТУДИЯ ГРАФИЧЕСКОГО ДИЗАЙНА • '26
+                        </p>
+
+                        <h1 className="name-reveal text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display italic leading-[0.9] tracking-tight text-text-primary mb-6">
+                            Zhigunov Design
+                        </h1>
+
+                        <p className="blur-in text-lg md:text-2xl text-muted mb-6">
+                            В фокусе студии —{" "}
+                            <span
+                                key={roleIndex}
+                                className="font-display italic text-text-primary animate-role-fade-in inline-block px-1 text-2xl md:text-4xl"
+                            >
+                                {roles[roleIndex]}
+                            </span>{" "}
+                            и визуальные системы.
+                        </p>
+
+                        <p className="blur-in text-sm md:text-base text-muted max-w-lg mb-12">
+                            Создаем выразительные бренды, тактильную упаковку, книжную графику и комплексные дизайн-системы на стыке швейцарской школы и современной эстетики.
+                        </p>
+
+                        {/* CTA Buttons */}
+                        <div className="blur-in inline-flex flex-wrap items-center justify-center gap-4">
+                            {/* "Смотреть кейсы": Solid button */}
+                            <button
+                                onClick={() => onNavigate("work")}
+                                className="group relative rounded-full text-sm transition-transform duration-300 hover:scale-105"
+                            >
+                                <span
+                                    className="absolute rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    style={{ inset: "-2px" }}
+                                />
+                                <span className="relative z-10 block rounded-full px-7 py-3.5 bg-text-primary text-bg group-hover:bg-bg group-hover:text-text-primary transition-colors duration-300 font-medium">
+                                    Смотреть кейсы
+                                </span>
+                            </button>
+
+                            {/* "Заказать проект...": Outlined button */}
+                            <button
+                                onClick={() => onNavigate("contact")}
+                                className="group relative rounded-full text-sm transition-transform duration-300 hover:scale-105"
+                            >
+                                <span
+                                    className="absolute rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    style={{ inset: "-2px" }}
+                                />
+                                <span className="relative z-10 block rounded-full px-7 py-3.5 border-2 border-stroke bg-bg text-text-primary group-hover:border-transparent transition-colors duration-300 font-medium">
+                                    Заказать проект...
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3">
+                        <span className="text-xs text-muted uppercase tracking-[0.2em]">
+                            СКРОЛЛ
+                        </span>
+                        <div className="w-px h-10 bg-stroke overflow-hidden relative">
+                            <div className="w-full h-1/2 accent-gradient animate-scroll-down" />
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // --- SECTION 3: SELECTED WORKS ---
+        function SelectedWorksSection({ onSelectProject }) {
+            return (
+                <section id="work" className="bg-bg py-12 md:py-16">
+                    <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+                        {/* Header */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
+                        >
+                            <div>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="w-8 h-px bg-stroke" />
+                                    <span className="text-xs text-muted uppercase tracking-[0.3em]">
+                                        Избранные работы
+                                    </span>
+                                </div>
+                                <h2 className="text-4xl md:text-6xl font-normal tracking-tight text-text-primary mb-3">
+                                    Ключевые <span className="font-display italic">проекты</span>
+                                </h2>
+                                <p className="text-sm md:text-base text-muted max-w-md">
+                                    Брендинг, упаковка, шрифтовые решения и многостраничные издания, созданные в нашей студии.
+                                </p>
+                            </div>
+
+                            <button
+                                onClick={() => onSelectProject(PROJECTS[0])}
+                                className="hidden md:inline-flex group relative rounded-full text-sm transition-transform duration-300 hover:scale-105"
+                            >
+                                <span
+                                    className="absolute rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    style={{ inset: "-2px" }}
+                                />
+                                <span className="relative z-10 inline-flex items-center gap-2 rounded-full bg-surface border border-stroke group-hover:border-transparent px-6 py-3 text-text-primary">
+                                    <span>Все кейсы</span>
+                                    <span className="transition-transform duration-300 group-hover:translate-x-1">
+                                        →
+                                    </span>
+                                </span>
+                            </button>
+                        </motion.div>
+
+                        {/* Bento Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
+                            {PROJECTS.map((project, index) => (
+                                <motion.div
+                                    key={project.id}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: index * 0.1,
+                                        ease: [0.25, 0.1, 0.25, 1]
+                                    }}
+                                    viewport={{ once: true, margin: "-60px" }}
+                                    onClick={() => onSelectProject(project)}
+                                    className={`${project.span} ${project.aspect} group relative bg-surface border border-stroke rounded-3xl overflow-hidden cursor-pointer`}
+                                >
+                                    {/* Background Image */}
+                                    <img
+                                        src={project.image}
+                                        alt={project.title}
+                                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                    />
+
+                                    {/* Halftone Overlay */}
+                                    <div
+                                        className="absolute inset-0 opacity-20 mix-blend-multiply pointer-events-none"
+                                        style={{
+                                            backgroundImage:
+                                                "radial-gradient(circle, #000 1px, transparent 1px)",
+                                            backgroundSize: "4px 4px"
+                                        }}
+                                    />
+
+                                    {/* Subtle bottom label before hover */}
+                                    <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-xs text-text-primary/90 bg-bg/60 backdrop-blur-md border border-white/10 rounded-full px-4 py-2 transition-opacity duration-300 group-hover:opacity-0">
+                                        <span className="font-medium">{project.title}</span>
+                                        <span className="text-muted">{project.category}</span>
+                                    </div>
+
+                                    {/* Hover Backdrop & Pill */}
+                                    <div className="absolute inset-0 bg-bg/70 opacity-0 group-hover:opacity-100 backdrop-blur-lg transition-all duration-500 flex items-center justify-center p-6">
+                                        <div className="p-[2px] rounded-full animated-gradient-border shadow-xl transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                                            <div className="bg-white text-black rounded-full px-6 py-2.5 text-sm font-medium flex items-center gap-1.5">
+                                                <span>Кейс —</span>
+                                                <span className="font-display italic text-lg">
+                                                    {project.title}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // --- SECTION 4: JOURNAL ---
+        function JournalSection({ onSelectEntry }) {
+            return (
+                <section id="journal" className="bg-bg py-16 md:py-24">
+                    <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+                        {/* Header */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6"
+                        >
+                            <div>
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="w-8 h-px bg-stroke" />
+                                    <span className="text-xs text-muted uppercase tracking-[0.3em]">
+                                        Журнал студии
+                                    </span>
+                                </div>
+                                <h2 className="text-4xl md:text-6xl font-normal tracking-tight text-text-primary mb-3">
+                                    Мысли о <span className="font-display italic">дизайне</span>
+                                </h2>
+                                <p className="text-sm md:text-base text-muted max-w-md">
+                                    Заметки и эссе о типографике, визуальных системах, печатном ремесле и арт-дирекшне.
+                                </p>
+                            </div>
+
+                            <button
+                                onClick={() => onSelectEntry(JOURNAL_ENTRIES[0])}
+                                className="hidden md:inline-flex group relative rounded-full text-sm transition-transform duration-300 hover:scale-105"
+                            >
+                                <span
+                                    className="absolute rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    style={{ inset: "-2px" }}
+                                />
+                                <span className="relative z-10 inline-flex items-center gap-2 rounded-full bg-surface border border-stroke group-hover:border-transparent px-6 py-3 text-text-primary">
+                                    <span>Все статьи</span>
+                                    <span className="transition-transform duration-300 group-hover:translate-x-1">
+                                        →
+                                    </span>
+                                </span>
+                            </button>
+                        </motion.div>
+
+                        {/* 4 Horizontal Pills */}
+                        <div className="flex flex-col gap-4">
+                            {JOURNAL_ENTRIES.map((entry, idx) => (
+                                <motion.div
+                                    key={entry.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{
+                                        duration: 0.7,
+                                        delay: idx * 0.08,
+                                        ease: [0.25, 0.1, 0.25, 1]
+                                    }}
+                                    viewport={{ once: true, margin: "-50px" }}
+                                    onClick={() => onSelectEntry(entry)}
+                                    className="group flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-4 bg-surface/30 hover:bg-surface border border-stroke rounded-[40px] sm:rounded-full transition-all duration-300 cursor-pointer"
+                                >
+                                    <div className="flex items-center gap-6">
+                                        <img
+                                            src={entry.image}
+                                            alt={entry.title}
+                                            className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border border-stroke flex-shrink-0 transition-transform duration-500 group-hover:scale-105"
+                                        />
+                                        <div>
+                                            <h3 className="text-lg md:text-2xl font-normal text-text-primary group-hover:text-[#89AACC] transition-colors">
+                                                {entry.title}
+                                            </h3>
+                                            <p className="text-xs sm:text-sm text-muted line-clamp-1 mt-1 max-w-xl">
+                                                {entry.excerpt}
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex items-center justify-between sm:justify-end gap-6 pl-2 sm:pl-0 pr-4">
+                                        <div className="text-xs text-muted flex items-center gap-3 whitespace-nowrap">
+                                            <span>{entry.readTime}</span>
+                                            <span className="w-1 h-1 rounded-full bg-stroke" />
+                                            <span>{entry.date}</span>
+                                        </div>
+                                        <div className="w-10 h-10 rounded-full border border-stroke bg-bg flex items-center justify-center text-text-primary group-hover:bg-text-primary group-hover:text-bg transition-colors">
+                                            ↗
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // --- SECTION 5: EXPLORATIONS (GSAP PARALLAX GALLERY) ---
+        function ExplorationsSection({ onSelectExploration }) {
+            const sectionRef = useRef(null);
+            const contentRef = useRef(null);
+            const leftColRef = useRef(null);
+            const rightColRef = useRef(null);
+
+            useEffect(() => {
+                const section = sectionRef.current;
+                const content = contentRef.current;
+                const leftCol = leftColRef.current;
+                const rightCol = rightColRef.current;
+                if (!section || !content || !leftCol || !rightCol) return;
+
+                const ctx = gsap.context(() => {
+                    // Layer 1: Pin center content
+                    ScrollTrigger.create({
+                        trigger: section,
+                        start: "top top",
+                        end: "bottom bottom",
+                        pin: content,
+                        pinSpacing: false
+                    });
+
+                    // Layer 2: Scroll-driven parallax columns
+                    gsap.fromTo(
+                        leftCol,
+                        { yPercent: 15 },
+                        {
+                            yPercent: -35,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: section,
+                                start: "top bottom",
+                                end: "bottom top",
+                                scrub: true
+                            }
+                        }
+                    );
+
+                    gsap.fromTo(
+                        rightCol,
+                        { yPercent: 35 },
+                        {
+                            yPercent: -55,
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: section,
+                                start: "top bottom",
+                                end: "bottom top",
+                                scrub: true
+                            }
+                        }
+                    );
+                }, section);
+
+                return () => ctx.revert();
+            }, []);
+
+            const leftItems = EXPLORATIONS.slice(0, 3);
+            const rightItems = EXPLORATIONS.slice(3, 6);
+
+            return (
+                <section
+                    ref={sectionRef}
+                    className="relative min-h-[300vh] bg-bg overflow-hidden border-t border-stroke/60"
+                >
+                    {/* Layer 1: Pinned Center (z-10) */}
+                    <div
+                        ref={contentRef}
+                        className="relative z-10 h-screen w-full flex flex-col items-center justify-center text-center px-6 pointer-events-none"
+                    >
+                        <div className="flex items-center gap-3 mb-4">
+                            <span className="w-6 h-px bg-stroke" />
+                            <span className="text-xs text-muted uppercase tracking-[0.3em]">
+                                Архив и Поиск
+                            </span>
+                            <span className="w-6 h-px bg-stroke" />
+                        </div>
+
+                        <h2 className="text-5xl md:text-7xl lg:text-8xl font-normal tracking-tight text-text-primary mb-4">
+                            Графическая <span className="font-display italic">лаборатория</span>
+                        </h2>
+
+                        <p className="text-sm md:text-base text-muted max-w-md mb-8">
+                            Эксперименты с печатными техниками, каллиграфией, плакатной композицией и шрифтовой пластикой.
+                        </p>
+
+                        <a
+                            href="https://behance.net"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="pointer-events-auto group relative rounded-full text-sm transition-transform duration-300 hover:scale-105"
+                        >
+                            <span
+                                className="absolute rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                style={{ inset: "-2px" }}
+                            />
+                            <span className="relative z-10 inline-flex items-center gap-2 rounded-full bg-surface border border-stroke group-hover:border-transparent px-6 py-3 text-text-primary">
+                                <span>Архив на Behance</span>
+                                <span>↗</span>
+                            </span>
+                        </a>
+                    </div>
+
+                    {/* Layer 2: Parallax Columns (z-20, absolute) */}
+                    <div className="absolute inset-0 z-20 pointer-events-none flex justify-center">
+                        <div className="w-full max-w-[1400px] px-6 md:px-12 grid grid-cols-2 gap-12 md:gap-40 pt-[30vh]">
+                            {/* Left Column */}
+                            <div
+                                ref={leftColRef}
+                                className="flex flex-col items-start md:items-center gap-36 md:gap-56"
+                            >
+                                {leftItems.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        onClick={() => onSelectExploration(item)}
+                                        className={`pointer-events-auto group relative w-full aspect-square max-w-[320px] rounded-3xl overflow-hidden bg-surface border border-stroke shadow-2xl cursor-pointer transition-transform duration-500 hover:scale-105 hover:rotate-0 ${item.rotation}`}
+                                    >
+                                        <img
+                                            src={item.img}
+                                            alt={item.title}
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                                            <span className="text-[11px] uppercase tracking-widest text-[#89AACC]">
+                                                {item.tag}
+                                            </span>
+                                            <span className="text-base font-display italic text-text-primary">
+                                                {item.title}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Right Column */}
+                            <div
+                                ref={rightColRef}
+                                className="flex flex-col items-end md:items-center gap-36 md:gap-56 pt-40"
+                            >
+                                {rightItems.map((item) => (
+                                    <div
+                                        key={item.id}
+                                        onClick={() => onSelectExploration(item)}
+                                        className={`pointer-events-auto group relative w-full aspect-square max-w-[320px] rounded-3xl overflow-hidden bg-surface border border-stroke shadow-2xl cursor-pointer transition-transform duration-500 hover:scale-105 hover:rotate-0 ${item.rotation}`}
+                                    >
+                                        <img
+                                            src={item.img}
+                                            alt={item.title}
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
+                                            <span className="text-[11px] uppercase tracking-widest text-[#89AACC]">
+                                                {item.tag}
+                                            </span>
+                                            <span className="text-base font-display italic text-text-primary">
+                                                {item.title}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // --- SECTION 6: STATS ---
+        function StatsSection() {
+            const stats = [
+                {
+                    value: "12+",
+                    label: "Лет в индустрии",
+                    sub: "Формируем визуальную культуру брендов от локальных стартапов до международных компаний."
+                },
+                {
+                    value: "140+",
+                    label: "Реализованных брендов",
+                    sub: "Фирменные стили, линейки упаковки, шрифты и сложные многостраничные издания."
+                },
+                {
+                    value: "25+",
+                    label: "Наград и публикаций",
+                    sub: "Работы студии отмечены на фестивалях дизайна и опубликованы в профильных изданиях."
+                }
+            ];
+
+            return (
+                <section className="bg-bg py-16 md:py-24 border-t border-stroke">
+                    <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {stats.map((stat, idx) => (
+                                <motion.div
+                                    key={stat.label}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: idx * 0.12,
+                                        ease: [0.25, 0.1, 0.25, 1]
+                                    }}
+                                    viewport={{ once: true, margin: "-80px" }}
+                                    className="p-8 rounded-3xl bg-surface/40 border border-stroke flex flex-col justify-between"
+                                >
+                                    <span className="text-6xl md:text-7xl lg:text-8xl font-display italic text-text-primary leading-none mb-6">
+                                        {stat.value}
+                                    </span>
+                                    <div>
+                                        <h3 className="text-lg font-medium text-text-primary mb-2">
+                                            {stat.label}
+                                        </h3>
+                                        <p className="text-sm text-muted leading-relaxed">
+                                            {stat.sub}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // --- SECTION 7: CONTACT / FOOTER ---
+        function ContactFooterSection() {
+            const marqueeRef = useRef(null);
+            const [copied, setCopied] = useState(false);
+
+            useEffect(() => {
+                const el = marqueeRef.current;
+                if (!el) return;
+                const ctx = gsap.context(() => {
+                    gsap.to(el, {
+                        xPercent: -50,
+                        duration: 40,
+                        ease: "none",
+                        repeat: -1
+                    });
+                });
+                return () => ctx.revert();
+            }, []);
+
+            const copyEmail = () => {
+                const temp = document.createElement("textarea");
+                temp.value = "hello@zhigunov.design";
+                document.body.appendChild(temp);
+                temp.select();
+                document.execCommand("copy");
+                document.body.removeChild(temp);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2500);
+            };
+
+            const marqueeText = Array(10).fill("ZHIGUNOV DESIGN STUDIO • ЭСТЕТИКА И СМЫСЛ • ").join("");
+
+            return (
+                <footer
+                    id="contact"
+                    className="relative bg-bg pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden border-t border-stroke"
+                >
+                    {/* Flipped HLS Video Background */}
+                    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                        <HlsVideo
+                            src="https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8"
+                            flipped={true}
+                        />
+                        <div className="absolute inset-0 bg-black/60" />
+                        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg to-transparent" />
+                    </div>
+
+                    {/* GSAP Marquee */}
+                    <div className="relative z-10 w-full overflow-hidden py-6 mb-12 select-none border-y border-white/10">
+                        <div className="flex whitespace-nowrap">
+                            <div
+                                ref={marqueeRef}
+                                className="flex whitespace-nowrap text-5xl md:text-7xl lg:text-8xl font-display italic text-text-primary/90 tracking-tight"
+                            >
+                                <span className="pr-8">{marqueeText}</span>
+                                <span className="pr-8">{marqueeText}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Center CTA */}
+                    <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 text-center my-16">
+                        <p className="text-xs text-muted uppercase tracking-[0.3em] mb-4">
+                            Готовы обсудить ваш бренд?
+                        </p>
+                        <h2 className="text-4xl md:text-6xl font-normal text-text-primary mb-8">
+                            Создадим сильную{" "}
+                            <span className="font-display italic">айдентику вместе</span>
+                        </h2>
+
+                        <div className="flex flex-wrap items-center justify-center gap-4">
+                            <a
+                                href="mailto:hello@zhigunov.design"
+                                className="group relative inline-flex rounded-full text-base transition-transform duration-300 hover:scale-105"
+                            >
+                                <span
+                                    className="absolute rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                    style={{ inset: "-2px" }}
+                                />
+                                <span className="relative z-10 inline-flex items-center gap-3 rounded-full bg-surface border border-stroke group-hover:border-transparent px-8 py-4 text-text-primary font-medium">
+                                    <span>hello@zhigunov.design</span>
+                                    <span className="text-[#89AACC]">↗</span>
+                                </span>
+                            </a>
+
+                            <button
+                                onClick={copyEmail}
+                                className="rounded-full px-5 py-4 text-xs uppercase tracking-widest bg-surface/80 border border-stroke text-muted hover:text-text-primary transition-colors"
+                            >
+                                {copied ? "Скопировано!" : "Скопировать почту"}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Footer Bottom Bar */}
+                    <div className="relative z-10 max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6">
+                        {/* Social Links */}
+                        <div className="flex items-center gap-6 text-xs sm:text-sm text-muted">
+                            {[
+                                { name: "Behance", url: "https://behance.net" },
+                                { name: "Telegram", url: "https://t.me" },
+                                { name: "Dribbble", url: "https://dribbble.com" },
+                                { name: "Dprofile", url: "https://dprofile.ru" }
+                            ].map((social) => (
+                                <a
+                                    key={social.name}
+                                    href={social.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="hover:text-text-primary transition-colors"
+                                >
+                                    {social.name}
+                                </a>
+                            ))}
+                        </div>
+
+                        {/* Availability status */}
+                        <div className="flex items-center gap-2.5 bg-surface/80 border border-stroke rounded-full px-4 py-2">
+                            <span className="relative flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
+                            </span>
+                            <span className="text-xs text-text-primary">
+                                Открыты для новых проектов
+                            </span>
+                        </div>
+
+                        <div className="text-xs text-muted">
+                            © 2026 Zhigunov Design Studio. Все права защищены.
+                        </div>
+                    </div>
+                </footer>
+            );
+        }
+
+        // --- INTERACTIVE MODALS ---
+        function Modals({
+            selectedProject,
+            onCloseProject,
+            selectedJournal,
+            onCloseJournal,
+            selectedExploration,
+            onCloseExploration,
+            resumeOpen,
+            onCloseResume
+        }) {
+            return (
+                <AnimatePresence>
+                    {/* Project Modal */}
+                    {selectedProject && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={onCloseProject}
+                            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
+                        >
+                            <motion.div
+                                initial={{ y: 30, opacity: 0, scale: 0.97 }}
+                                animate={{ y: 0, opacity: 1, scale: 1 }}
+                                exit={{ y: 20, opacity: 0, scale: 0.97 }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-full max-w-3xl bg-surface border border-stroke rounded-3xl overflow-hidden shadow-2xl max-h-[90vh] flex flex-col"
+                            >
+                                <div className="relative h-64 md:h-80 w-full overflow-hidden">
+                                    <img
+                                        src={selectedProject.image}
+                                        alt={selectedProject.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <button
+                                        onClick={onCloseProject}
+                                        className="absolute top-4 right-4 w-10 h-10 rounded-full bg-bg/80 border border-stroke text-text-primary flex items-center justify-center hover:bg-text-primary hover:text-bg transition-colors"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                                <div className="p-6 md:p-8 overflow-y-auto space-y-6">
+                                    <div className="flex flex-wrap items-center justify-between gap-2 border-b border-stroke pb-4">
+                                        <div>
+                                            <span className="text-xs uppercase tracking-[0.2em] text-[#89AACC]">
+                                                {selectedProject.category}
+                                            </span>
+                                            <h3 className="text-3xl md:text-4xl font-display italic text-text-primary mt-1">
+                                                {selectedProject.title}
+                                            </h3>
+                                        </div>
+                                        <div className="text-xs text-muted">
+                                            {selectedProject.client} • {selectedProject.year}
+                                        </div>
+                                    </div>
+
+                                    <p className="text-sm md:text-base text-text-primary/90 leading-relaxed">
+                                        {selectedProject.description}
+                                    </p>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="p-4 rounded-2xl bg-bg border border-stroke">
+                                            <h4 className="text-xs uppercase tracking-widest text-muted mb-2">
+                                                Задача
+                                            </h4>
+                                            <p className="text-xs md:text-sm text-text-primary/80 leading-relaxed">
+                                                {selectedProject.challenge}
+                                            </p>
+                                        </div>
+                                        <div className="p-4 rounded-2xl bg-bg border border-stroke">
+                                            <h4 className="text-xs uppercase tracking-widest text-muted mb-2">
+                                                Решение
+                                            </h4>
+                                            <p className="text-xs md:text-sm text-text-primary/80 leading-relaxed">
+                                                {selectedProject.solution}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    )}
+
+                    {/* Journal Modal */}
+                    {selectedJournal && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={onCloseJournal}
+                            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
+                        >
+                            <motion.div
+                                initial={{ y: 30, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 20, opacity: 0 }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-full max-w-2xl bg-surface border border-stroke rounded-3xl p-6 md:p-10 shadow-2xl"
+                            >
+                                <div className="flex items-center justify-between mb-6">
+                                    <span className="text-xs text-muted">
+                                        {selectedJournal.date} • {selectedJournal.readTime}
+                                    </span>
+                                    <button
+                                        onClick={onCloseJournal}
+                                        className="w-9 h-9 rounded-full bg-bg border border-stroke text-text-primary flex items-center justify-center"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+                                <h3 className="text-3xl md:text-4xl font-display italic text-text-primary mb-4">
+                                    {selectedJournal.title}
+                                </h3>
+                                <p className="text-sm md:text-base text-muted leading-relaxed mb-6">
+                                    {selectedJournal.content}
+                                </p>
+                                <img
+                                    src={selectedJournal.image}
+                                    alt={selectedJournal.title}
+                                    className="w-full h-56 object-cover rounded-2xl border border-stroke"
+                                />
+                            </motion.div>
+                        </motion.div>
+                    )}
+
+                    {/* Exploration Lightbox */}
+                    {selectedExploration && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={onCloseExploration}
+                            className="fixed inset-0 z-[100] bg-black/85 backdrop-blur-md flex items-center justify-center p-4"
+                        >
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                exit={{ scale: 0.9, opacity: 0 }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="relative max-w-lg w-full bg-surface border border-stroke rounded-3xl overflow-hidden p-4"
+                            >
+                                <img
+                                    src={selectedExploration.img}
+                                    alt={selectedExploration.title}
+                                    className="w-full aspect-square object-cover rounded-2xl"
+                                />
+                                <div className="flex items-center justify-between pt-4 px-2">
+                                    <div>
+                                        <p className="text-xs uppercase tracking-widest text-[#89AACC]">
+                                            {selectedExploration.tag}
+                                        </p>
+                                        <h4 className="text-xl font-display italic text-text-primary">
+                                            {selectedExploration.title}
+                                        </h4>
+                                    </div>
+                                    <button
+                                        onClick={onCloseExploration}
+                                        className="px-4 py-2 rounded-full bg-bg border border-stroke text-xs text-text-primary"
+                                    >
+                                        Закрыть
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    )}
+
+                    {/* Studio Info / Resume Modal */}
+                    {resumeOpen && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={onCloseResume}
+                            className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+                        >
+                            <motion.div
+                                initial={{ y: 25, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                exit={{ y: 20, opacity: 0 }}
+                                onClick={(e) => e.stopPropagation()}
+                                className="w-full max-w-2xl bg-surface border border-stroke rounded-3xl p-6 md:p-10 shadow-2xl"
+                            >
+                                <div className="flex items-center justify-between border-b border-stroke pb-4 mb-6">
+                                    <div>
+                                        <h3 className="text-2xl md:text-3xl font-display italic text-text-primary">
+                                            Zhigunov Design Studio — Профиль
+                                        </h3>
+                                        <p className="text-xs text-muted">
+                                            Независимая студия графического дизайна и брендинга
+                                        </p>
+                                    </div>
+                                    <button
+                                        onClick={onCloseResume}
+                                        className="w-9 h-9 rounded-full bg-bg border border-stroke text-text-primary flex items-center justify-center"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+
+                                <div className="space-y-4 text-sm">
+                                    <div className="p-4 rounded-2xl bg-bg border border-stroke flex justify-between items-start gap-4">
+                                        <div>
+                                            <p className="font-medium text-text-primary">
+                                                Комплексный брендинг и визуальная айдентика
+                                            </p>
+                                            <p className="text-xs text-muted mt-1">
+                                                Разработка логотипов, гайдлайнов, дизайн-систем и фирменных носителей
+                                            </p>
+                                        </div>
+                                        <span className="text-xs text-[#89AACC] whitespace-nowrap">01</span>
+                                    </div>
+                                    <div className="p-4 rounded-2xl bg-bg border border-stroke flex justify-between items-start gap-4">
+                                        <div>
+                                            <p className="font-medium text-text-primary">
+                                                Дизайн упаковки и этикетки
+                                            </p>
+                                            <p className="text-xs text-muted mt-1">
+                                                Концепции, формообразование, подбор бумаг, тиснение и сопровождение печати
+                                            </p>
+                                        </div>
+                                        <span className="text-xs text-[#89AACC] whitespace-nowrap">02</span>
+                                    </div>
+                                    <div className="p-4 rounded-2xl bg-bg border border-stroke flex justify-between items-start gap-4">
+                                        <div>
+                                            <p className="font-medium text-text-primary">
+                                                Многостраничные издания и типографика
+                                            </p>
+                                            <p className="text-xs text-muted mt-1">
+                                                Книги, арт-каталоги, годовые отчеты, плакатная графика и кастомные шрифты
+                                            </p>
+                                        </div>
+                                        <span className="text-xs text-[#89AACC] whitespace-nowrap">03</span>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            );
+        }
+
+        // --- MAIN APP (Index.tsx) ---
+        function App() {
+            const [isLoading, setIsLoading] = useState(true);
+            const [activeSection, setActiveSection] = useState("home");
+            const [selectedProject, setSelectedProject] = useState(null);
+            const [selectedJournal, setSelectedJournal] = useState(null);
+            const [selectedExploration, setSelectedExploration] = useState(null);
+            const [resumeOpen, setResumeOpen] = useState(false);
+
+            const handleNavigate = (id) => {
+                setActiveSection(id);
+                const el = document.getElementById(id);
+                if (el) {
+                    el.scrollIntoView({ behavior: "smooth" });
+                }
+            };
+
+            useEffect(() => {
+                const sections = ["home", "work", "journal", "contact"];
+                const onScroll = () => {
+                    const scrollPos = window.scrollY + 300;
+                    for (const sectionId of sections) {
+                        const el = document.getElementById(sectionId);
+                        if (el) {
+                            const top = el.offsetTop;
+                            const height = el.offsetHeight;
+                            if (scrollPos >= top && scrollPos < top + height) {
+                                setActiveSection(sectionId === "journal" ? "work" : sectionId);
+                                break;
+                            }
+                        }
+                    }
+                };
+                window.addEventListener("scroll", onScroll, { passive: true });
+                return () => window.removeEventListener("scroll", onScroll);
+            }, []);
+
+            return (
+                <div className="min-h-screen bg-bg text-text-primary relative">
+                    <AnimatePresence mode="wait">
+                        {isLoading && (
+                            <LoadingScreen onComplete={() => setIsLoading(false)} />
+                        )}
+                    </AnimatePresence>
+
+                    <Navbar
+                        activeSection={activeSection}
+                        onNavigate={handleNavigate}
+                        onOpenResume={() => setResumeOpen(true)}
+                    />
+
+                    <main>
+                        <HeroSection
+                            isLoaded={!isLoading}
+                            onNavigate={handleNavigate}
+                        />
+                        <SelectedWorksSection
+                            onSelectProject={(project) => setSelectedProject(project)}
+                        />
+                        <JournalSection
+                            onSelectEntry={(entry) => setSelectedJournal(entry)}
+                        />
+                        <ExplorationsSection
+                            onSelectExploration={(item) => setSelectedExploration(item)}
+                        />
+                        <StatsSection />
+                        <ContactFooterSection />
+                    </main>
+
+                    <Modals
+                        selectedProject={selectedProject}
+                        onCloseProject={() => setSelectedProject(null)}
+                        selectedJournal={selectedJournal}
+                        onCloseJournal={() => setSelectedJournal(null)}
+                        selectedExploration={selectedExploration}
+                        onCloseExploration={() => setSelectedExploration(null)}
+                        resumeOpen={resumeOpen}
+                        onCloseResume={() => setResumeOpen(false)}
+                    />
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />);
+    </script>
+</body>
+</html>
