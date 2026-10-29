@@ -3,22 +3,19 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Сигнал — мессенджер</title>
 <style>
-:root{--bg:#fbfaf7;--pan:#fff;--ink:#1d2327;--mut:#7a838b;--acc:#0f766e;--out:#d5f0e8;--in:#eceff1;--line:#e3e6e8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10171b;--pan:#161f24;--ink:#e8edef;--mut:#8b97a0;--acc:#2dd4bf;--out:#134e4a;--in:#1f2b31;--line:#25323a}}
-:root[data-theme="dark"]{--bg:#10171b;--pan:#161f24;--ink:#e8edef;--mut:#8b97a0;--acc:#2dd4bf;--out:#134e4a;--in:#1f2b31;--line:#25323a}
+:root{--bg:#fbfaf7;--pan:#fff;--ink:#1d2327;--mut:#7a838b;--acc:#0f766e;--out:#d5f0e8;--in:#eceff1;--line:#e3e6e8}
+@media(prefers-color-scheme:dark){:root{--bg:#10171b;--pan:#161f24;--ink:#e8edef;--mut:#8b97a0;--acc:#2dd4bf;--out:#134e4a;--in:#1f2b31;--line:#25323a}}
 *{box-sizing:border-box}html,body{height:100%;margin:0}
 body{font:15px/1.4 system-ui,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
 button,input{font:inherit;color:inherit}
 button{border:0;background:var(--acc);color:#fff;padding:9px 14px;border-radius:10px;cursor:pointer}
-:root:not([data-theme="light"]) button:not(.g):not(.i){color:#06201d}
 button.g{background:none;color:var(--acc);border:1px solid var(--acc)}
 button.i{background:none;color:var(--ink);font-size:20px;padding:6px 10px}
-button:disabled{opacity:.5}
 input{border:1px solid var(--line);background:var(--pan);border-radius:10px;padding:10px 12px;width:100%}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 [hidden]{display:none!important}
-#auth{max-width:340px;margin:10vh auto;padding:24px;display:grid;gap:10px}
-#auth h1{margin:0;font:700 30px Georgia,serif}#sub{color:var(--mut);margin:0 0 4px}
+#auth{max-width:340px;margin:12vh auto;padding:24px;display:grid;gap:10px}
+#auth h1{margin:0 0 6px;font:700 30px Georgia,serif}
 #err{color:#c0392b;min-height:20px;font-size:13px}
 #app{display:grid;grid-template-columns:330px 1fr;height:100%}
 aside{background:var(--pan);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
@@ -26,9 +23,10 @@ aside{background:var(--pan);border-right:1px solid var(--line);display:flex;flex
 #list{overflow:auto;flex:1}
 .row{display:flex;gap:10px;align-items:center;padding:10px 12px;cursor:pointer}
 .row:hover{background:var(--in)}
+.dot{width:9px;height:9px;border-radius:50%;background:#22c55e;margin-left:auto}
 .av{width:42px;height:42px;border-radius:50%;background:var(--acc);color:#fff;display:grid;place-items:center;font-weight:700;overflow:hidden;flex:none;cursor:pointer}
 .av img{width:100%;height:100%;object-fit:cover}
-main{display:flex;flex-direction:column;min-height:0;min-width:0}
+main{display:flex;flex-direction:column;min-height:0;min-width:0;padding-top:env(safe-area-inset-top)}
 #empty{margin:auto;color:var(--mut);padding:20px;text-align:center}
 #chat{display:flex;flex-direction:column;height:100%;min-height:0}
 .hd{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--pan);border-bottom:1px solid var(--line)}
@@ -38,7 +36,7 @@ main{display:flex;flex-direction:column;min-height:0;min-width:0}
 .m.o{align-self:flex-end;background:var(--out)}
 .m img,.m video{max-width:100%;border-radius:10px;display:block}
 .m a{color:var(--acc)}.m small{display:block;color:var(--mut);font-size:11px;text-align:right}
-.bar{display:flex;gap:6px;padding:8px 10px;background:var(--pan);border-top:1px solid var(--line);align-items:center}
+.bar{display:flex;gap:6px;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:var(--pan);border-top:1px solid var(--line);align-items:center}
 #modal{position:fixed;inset:0;background:#0007;display:grid;place-items:center;z-index:9}
 .card{background:var(--pan);border-radius:16px;padding:20px;width:min(380px,92vw);max-height:86vh;overflow:auto;display:grid;gap:10px;justify-items:center;text-align:center}
 .card .av{width:84px;height:84px;font-size:32px}
@@ -57,20 +55,20 @@ main{display:flex;flex-direction:column;min-height:0;min-width:0}
 </style></head><body>
 
 <div id="auth">
-  <h1>Сигнал</h1><p id="sub">Загрузка…</p>
-  <input id="u" placeholder="Имя пользователя (a–z, 0–9, _)" autocomplete="off" hidden>
-  <input id="p" type="password" placeholder="Пароль шифрования, минимум 6 символов" autocomplete="off">
-  <button id="go" disabled>Продолжить</button>
+  <h1>Сигнал</h1>
+  <input id="u" placeholder="Имя пользователя (a–z, 0–9, _)" autocomplete="username">
+  <input id="p" type="password" placeholder="Пароль, минимум 6 символов" autocomplete="current-password">
+  <button id="login">Войти</button><button id="reg" class="g">Создать аккаунт</button><button id="rst" class="g">Восстановить из копии</button>
   <div id="err"></div>
 </div>
 
 <div id="app" hidden>
   <aside>
-    <div class="top"><div id="me" role="button" tabindex="0"></div><input id="q" placeholder="Поиск пользователей"></div>
+    <div class="top"><div id="me" role="button" tabindex="0"></div><input id="q" placeholder="Имя пользователя + Enter"></div>
     <div id="list"></div>
   </aside>
   <main>
-    <div id="empty">Найдите пользователя в поиске слева.<br>Можно написать и самому себе — это «Избранное».</div>
+    <div id="empty">Введите имя друга в поле слева и нажмите Enter.<br>Вы оба должны быть онлайн в момент знакомства.</div>
     <div id="chat" hidden>
       <div class="hd"><button id="back" class="i" aria-label="Назад">←</button><div id="peer" class="row" style="padding:0;flex:1"></div></div>
       <div id="msgs"></div>
@@ -85,16 +83,16 @@ main{display:flex;flex-direction:column;min-height:0;min-width:0}
 </div>
 <div id="modal" hidden><div class="card" id="card"></div></div>
 <div id="toast" hidden></div>
-<input type="file" id="file" hidden><input type="file" id="avf" accept="image/*" hidden>
+<input type="file" id="bak" hidden><input type="file" id="file" hidden><input type="file" id="avf" accept="image/*" hidden>
 
+<script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <script>
-const $=s=>document.querySelector(s);
+const $=s=>document.querySelector(s),lc=s=>s.toLowerCase();
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const GIFTS=['🎁','❤️','🎂','🌟','🚀','🔥'];
+const GIFTS=['🎁','❤️','🎂','🌟','🚀','🔥'],MAXF=3e6;
 const toast=t=>{const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,3500)};
-const say=t=>$('#err').textContent=t;
 
-// ---- Шифрование (WebCrypto) ----
+// ---- Шифрование ----
 const enc=new TextEncoder(),dec=new TextDecoder();
 const tob64=b=>{let s='',u=new Uint8Array(b);for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(0,u.subarray(i,i+8192));return btoa(s)};
 const fromb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
@@ -105,128 +103,126 @@ const aesDec=(k,o)=>crypto.subtle.decrypt({name:'AES-GCM',iv:fromb64(o.iv)},k,fr
 const exp=k=>crypto.subtle.exportKey('jwk',k);
 async function fpr(p){const h=new Uint8Array(await crypto.subtle.digest('SHA-256',enc.encode(p.x+p.y)));return[...h.slice(0,8)].map(b=>b.toString(16).padStart(2,'0')).join(' ')}
 
-// ---- Состояние ----
-let DB,U,AS,me,priv,reg=true,cur=null,unM=null,blocked=[],P={},C={};const sk={};
-const cid=(a,b)=>[a,b].sort().join('~');
-const mine=()=>DB.collection('data/users/'+me);   // личное хранилище, недоступно другим
+// ---- Хранилище (IndexedDB, всё зашифровано паролем) ----
+const kv=(m,k,v)=>new Promise(r=>{const q=indexedDB.open('signal',1);q.onupgradeneeded=()=>q.result.createObjectStore('a');
+ q.onsuccess=()=>{const s=q.result.transaction('a',m==='get'?'readonly':'readwrite').objectStore('a'),x=m==='get'?s.get(k):s.put(v,k);x.onsuccess=()=>r(x.result)}});
+let S,key,salt,me,peer,priv,cur=null,want=null;const conns={},sk={},pend={};
+const rec=async()=>({name:S.name,salt:tob64(salt),...await aesEnc(key,enc.encode(JSON.stringify(S)))});
+let chain=Promise.resolve(),queued=0;
+const save=()=>{if(queued)return chain;queued=1;chain=chain.then(async()=>{queued=0;await kv('put','u:'+lc(me),await rec())});return chain};
+addEventListener('visibilitychange',()=>{if(S&&document.hidden)save()});addEventListener('pagehide',()=>{if(S)save()});
 
-// ---- Запуск: регистрация / вход ----
-(async()=>{
- try{[DB,U,AS]=await Promise.all([claude.use('db'),claude.use('user'),claude.use('assets')])}catch{}
- if(!DB||!U){$('#sub').textContent='Нужен вход в Claude';say('Откройте страницу в приложении Claude под своим аккаунтом.');return}
- me=await U.id();if(!me){$('#sub').textContent='Нужен вход в Claude';return}
- const s=await DB.doc('profiles/'+me).get();reg=!s.exists;
- $('#sub').textContent=reg?'Регистрация: придумайте имя и пароль шифрования':'Вход: введите пароль шифрования';
- $('#u').hidden=!reg;$('#go').disabled=false;$('#go').textContent=reg?'Создать аккаунт':'Войти'})();
+// ---- Регистрация и вход ----
+const say=t=>$('#err').textContent=t;
+function creds(){const u=$('#u').value.trim(),p=$('#p').value;
+ if(!/^[a-zA-Z0-9_]{3,20}$/.test(u)){say('Имя: 3–20 символов, латиница, цифры и _');return}
+ if(p.length<6){say('Пароль не короче 6 символов');return}return[u,p]}
+$('#reg').onclick=async()=>{const c=creds();if(!c)return;const[u,p]=c;
+ if(await kv('get','u:'+lc(u)))return say('Такой аккаунт уже есть на этом устройстве');
+ say('Создаём ключи шифрования…');
+ const kp=await crypto.subtle.generateKey(EC,true,['deriveKey']);
+ S={name:u,pub:await exp(kp.publicKey),priv:await exp(kp.privateKey),avatar:'',contacts:{},blocked:[],gifts:[],chats:{}};
+ salt=crypto.getRandomValues(new Uint8Array(16));key=await pwKey(p,salt);me=u;enter()};
+$('#login').onclick=async()=>{const c=creds();if(!c)return;const[u,p]=c;
+ const r=await kv('get','u:'+lc(u));if(!r)return say('Аккаунта нет на этом устройстве. Нажмите «Создать аккаунт».');
+ try{salt=fromb64(r.salt);key=await pwKey(p,salt);S=JSON.parse(dec.decode(await aesDec(key,r)));me=S.name;enter()}
+ catch{say('Неверный пароль')}};
 
-$('#go').onclick=async()=>{const pw=$('#p').value;if(pw.length<6)return say('Пароль: минимум 6 символов');
- $('#go').disabled=true;say('Проверяем…');
- try{
-  if(reg){const u=$('#u').value.trim(),l=u.toLowerCase();
-   if(!/^[a-zA-Z0-9_]{3,20}$/.test(u))throw new Error('Имя: 3–20 символов, латиница, цифры и _');
-   const n=await DB.doc('names/'+l).get();if(n.exists&&n.data().id!==me)throw new Error('Это имя уже занято');
-   const kp=await crypto.subtle.generateKey(EC,true,['deriveKey']),salt=crypto.getRandomValues(new Uint8Array(16));
-   const w=await aesEnc(await pwKey(pw,salt),enc.encode(JSON.stringify(await exp(kp.privateKey))));
-   await mine().doc('key').set({salt:tob64(salt),...w});
-   await DB.doc('names/'+l).set({id:me});
-   await DB.doc('profiles/'+me).set({name:u,lower:l,avatar:'',pub:JSON.stringify(await exp(kp.publicKey))});
-   priv=kp.privateKey}
-  else{const r=(await mine().doc('key').get()).data();
-   let jwk;try{jwk=JSON.parse(dec.decode(await aesDec(await pwKey(pw,fromb64(r.salt)),r)))}catch{throw new Error('Неверный пароль')}
-   priv=await crypto.subtle.importKey('jwk',jwk,EC,false,['deriveKey'])}
-  await enter()}
- catch(e){say(e.message||'Ошибка');$('#go').disabled=false}};
-
+let tries=0;
 async function enter(){
- const b=await mine().doc('blocked').get();blocked=b.exists?b.data().list||[]:[];
- $('#auth').hidden=true;$('#app').hidden=false;
- DB.collection('profiles').limit(500).onSnapshot(s=>{P={};s.docs.forEach(d=>P[d.id]={id:d.id,...d.data()});
-  $('#me').innerHTML=av(P[me]);$('#me').onclick=()=>profile(me);draw();if(cur)head()});
- const upd=s=>{s.docs.forEach(d=>C[d.id]=d.data());draw()};
- DB.collection('chats').where('a','==',me).onSnapshot(upd);
- DB.collection('chats').where('b','==',me).onSnapshot(upd)}
+ priv=await crypto.subtle.importKey('jwk',S.priv,EC,false,['deriveKey']);
+ navigator.storage?.persist?.();say('Подключаемся…');startPeer()}
+function startPeer(){peer=new Peer('sgl-'+lc(me));
+ peer.on('open',()=>{tries=0;if(!$('#app').hidden)return;$('#auth').hidden=true;$('#app').hidden=false;$('#me').innerHTML=av(S);$('#me').onclick=()=>profile();save();draw();
+  setInterval(()=>{for(const k in S.contacts)if((S.chats[k]||[]).some(m=>m.o&&!m.ok))flush(k)},15000)});
+ peer.on('connection',setup);
+ peer.on('disconnected',()=>peer.reconnect());
+ peer.on('error',e=>{if(e.type==='unavailable-id'&&$('#app').hidden){peer.destroy();
+   if(tries++<8){say('Освобождаем имя после прошлого входа… ('+tries+')');setTimeout(startPeer,3000)}else say('Это имя сейчас онлайн в другом месте')}
+  else if(e.type==='peer-unavailable')toast('Пользователь не в сети или не существует')})}
+
+// ---- Соединения ----
+const hello=c=>c.send({k:'hello',name:me,pub:S.pub,avatar:S.avatar,gifts:S.gifts});
+function setup(c){const k=c.peer.slice(4),go=()=>{if(S.blocked.includes(k))return c.close();conns[k]=c;hello(c);draw()};
+ c.open?go():c.on('open',go);
+ c.on('data',d=>onData(c,k,d));
+ c.on('close',()=>{if(conns[k]===c)delete conns[k];if(S.contacts[k]){S.contacts[k].seen=Date.now();save()}draw();if(cur===k)head()});c.on('error',()=>{})}
+function connect(k){if(conns[k]?.open||!peer?.open||Date.now()-(pend[k]||0)<10000)return;pend[k]=Date.now();setup(peer.connect('sgl-'+k,{reliable:true}))}
+async function flush(k){const c=conns[k];if(!c?.open||!sk[k])return connect(k);
+ for(const m of S.chats[k]||[])if(m.o&&!m.ok)c.send({k:'msg',id:m.id,...await aesEnc(sk[k],enc.encode(JSON.stringify(m.p)))})}
+async function onData(c,k,d){
+ if(S.blocked.includes(k))return;
+ if(d.k==='hello'){const pj=JSON.stringify(d.pub),o=S.contacts[k];
+  if(o&&o.pub!==pj){toast('⚠ Ключ «'+d.name+'» изменился. Соединение отклонено.');return c.close()}
+  S.contacts[k]={...o,name:d.name,pub:pj,avatar:d.avatar||'',gifts:d.gifts||[]};
+  sk[k]=await crypto.subtle.deriveKey({name:'ECDH',public:await crypto.subtle.importKey('jwk',d.pub,EC,false,[])},priv,AES,false,['encrypt','decrypt']);
+  save();draw();flush(k);if(cur===k)head();if(want===k){want=null;openChat(k)}return}
+ if(!sk[k])return;
+ if(d.k==='ack'){const m=(S.chats[k]||[]).find(x=>x.id===d.id);if(m){m.ok=1;save();if(cur===k)render()}return}
+ if(d.k==='msg'){let p;try{p=JSON.parse(dec.decode(await aesDec(sk[k],d)))}catch{return}
+  c.send({k:'ack',id:d.id});const a=S.chats[k]=S.chats[k]||[];if(a.some(x=>x.id===d.id))return;
+  a.push({id:d.id,o:0,ts:Date.now(),p});
+  if(p.t==='gift'&&GIFTS[p.g]){S.gifts.push({g:p.g,from:S.contacts[k].name});hello(c)}
+  save();draw();if(cur===k)render()}}
 
 // ---- Интерфейс ----
-const av=u=>`<div class="av">${u?.avatar?`<img src="${esc(u.avatar)}" alt="">`:esc((u?.name||'?')[0].toUpperCase())}</div>`;
-const other=c=>c.a===me?c.b:c.a;
-function rows(ids,empty){const l=$('#list');l.innerHTML=ids.length?'':`<p style="padding:16px;color:var(--mut)">${empty}</p>`;
- ids.forEach(id=>{const u=P[id];if(!u)return;const r=document.createElement('div');r.className='row';
-  r.innerHTML=av(u)+`<b>${esc(u.name)}</b>`+(id===me?'<span style="color:var(--mut)">(вы)</span>':'')+(blocked.includes(id)?' 🚫':'');
-  r.onclick=()=>{$('#q').value='';openChat(id)};l.append(r)})}
-function draw(){const q=$('#q').value.trim().toLowerCase();
- if(q)return rows(Object.keys(P).filter(id=>P[id].lower?.includes(q)),'Никого не найдено');
- rows(Object.values(C).sort((x,y)=>(y.last||0)-(x.last||0)).map(other),'Пока нет чатов. Найдите человека в поиске.')}
-$('#q').oninput=draw;
-const head=()=>{$('#peer').innerHTML=av(P[cur])+`<b>${esc(P[cur]?.name||'?')}</b>`;$('#peer').onclick=()=>profile(cur)};
-async function shared(uid){if(sk[uid])return sk[uid];
- const pub=await crypto.subtle.importKey('jwk',JSON.parse(P[uid].pub),EC,false,[]);
- return sk[uid]=await crypto.subtle.deriveKey({name:'ECDH',public:pub},priv,AES,false,['encrypt','decrypt'])}
-async function openChat(uid){if(!P[uid])return;cur=uid;unM?.();
- $('#empty').hidden=true;$('#chat').hidden=false;$('#app').classList.add('open');head();
- const key=await shared(uid),mk=cur;
- unM=DB.collection('chats/'+cid(me,uid)+'/msgs').orderBy('ts').onSnapshot(async s=>{
-  const items=(await Promise.all(s.docs.map(async d=>{const m=d.data();if(blocked.includes(m.from)&&m.from!==me)return null;let p;
-   try{p=JSON.parse(dec.decode(await aesDec(key,m)))}catch{p={t:'text',v:'🔒 не удалось расшифровать'}}
-   return{p,o:m.from===me,ts:m.ts}}))).filter(Boolean);
-  if(cur!==mk)return;const b=$('#msgs');b.innerHTML='';items.forEach(i=>b.append(bubble(i)));b.scrollTop=b.scrollHeight})}
-$('#back').onclick=()=>{$('#app').classList.remove('open');unM?.();cur=null};
-function bubble({p,o,ts}){const d=document.createElement('div');d.className='m'+(o?' o':'');
+const av=u=>`<div class="av">${u.avatar?`<img src="${esc(u.avatar)}" alt="">`:esc((u.name||'?')[0].toUpperCase())}</div>`;
+const last=k=>(S.chats[k]||[]).slice(-1)[0]?.ts||0;
+function draw(){const l=$('#list'),ks=Object.keys(S.contacts).sort((a,b)=>last(b)-last(a));
+ l.innerHTML=ks.length?'':'<p style="padding:16px;color:var(--mut)">Пока никого. Введите имя пользователя выше.</p>';
+ ks.forEach(k=>{const c=S.contacts[k],r=document.createElement('div');r.className='row';
+  r.innerHTML=av(c)+`<b>${esc(c.name)}</b>`+(S.blocked.includes(k)?' 🚫':'')+(conns[k]?.open?'<i class="dot"></i>':'');r.onclick=()=>openChat(k);l.append(r)})}
+$('#q').onkeydown=e=>{if(e.key!=='Enter')return;const k=lc(e.target.value.trim());e.target.value='';
+ if(!/^[a-z0-9_]{3,20}$/.test(k)||k===lc(me))return toast('Введите имя другого пользователя');
+ if(S.contacts[k])return openChat(k);want=k;pend[k]=0;connect(k);toast('Ищем «'+k+'»…')};
+function head(){const c=S.contacts[cur];$('#peer').innerHTML=av(c)+`<b>${esc(c.name)}</b><span style="color:var(--mut);font-size:12px;margin-left:auto">${conns[cur]?.open?'в сети':c.seen?'был(а) '+new Date(c.seen).toLocaleString([],{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'не в сети'}</span>`;$('#peer').onclick=()=>profile(cur)}
+function openChat(k){cur=k;$('#empty').hidden=true;$('#chat').hidden=false;$('#app').classList.add('open');head();render();connect(k);flush(k)}
+$('#back').onclick=()=>{$('#app').classList.remove('open');cur=null};
+function render(){const b=$('#msgs');b.innerHTML='';(S.chats[cur]||[]).forEach(m=>b.append(bubble(m)));b.scrollTop=b.scrollHeight}
+function bubble({p,o,ts,ok}){const d=document.createElement('div');d.className='m'+(o?' o':'');
  const safe=v=>typeof v==='string'&&v.startsWith('data:');let h='';
  if(p.t==='text')h=esc(p.v);
  else if(p.t==='img'&&safe(p.v))h=`<img src="${p.v}" alt="Фото">`;
  else if(p.t==='vid'&&safe(p.v))h=`<video controls src="${p.v}"></video>`;
  else if(p.t==='file'&&safe(p.v))h=`<a download="${esc(p.n)}" href="${p.v}">📄 ${esc(p.n)}</a>`;
- else if(p.t==='big'&&String(p.url).startsWith('/_blob/'))h=`<a href="#" class="big">⬇ ${esc(p.n)} (${esc(p.k)})</a>`;
  else if(p.t==='geo'){const a=+p.lat,b=+p.lng;h=`<a target="_blank" rel="noopener" href="https://www.openstreetmap.org/?mlat=${a}&mlon=${b}#map=16/${a}/${b}">📍 Геопозиция (${a.toFixed(4)}, ${b.toFixed(4)})</a>`}
  else if(p.t==='gift'&&GIFTS[p.g])h=`<span class="gf a${p.g|0}" style="font-size:44px">${GIFTS[p.g]}</span><br>Подарок`;
- d.innerHTML=h+`<small>${new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</small>`;
- const l=d.querySelector('.big');if(l)l.onclick=e=>{e.preventDefault();loadBig(p,l)};return d}
-const rd=f=>new Promise(r=>{const x=new FileReader();x.onload=()=>r(x.result);x.readAsDataURL(f)});
-async function loadBig(p,el){el.textContent='Загрузка…';
- try{const raw=await aesDec(await crypto.subtle.importKey('jwk',p.key,AES,false,['decrypt']),{iv:p.iv,ct:await (await fetch(p.url)).text()});
-  const mime=/^[\w.+-]+\/[\w.+-]+$/.test(p.mime)?p.mime:'application/octet-stream',url=await rd(new Blob([raw],{type:mime}));
-  el.outerHTML=p.k==='img'?`<img src="${url}" alt="">`:p.k==='vid'?`<video controls src="${url}"></video>`:`<a download="${esc(p.n)}" href="${url}">📄 ${esc(p.n)}</a>`}
- catch{el.textContent='Не удалось загрузить'}}
+ d.innerHTML=h+`<small>${new Date(ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}${o?(ok?' ✓':' ⏳'):''}</small>`;return d}
 
 // ---- Отправка ----
-async function send(p){if(!cur)return;
- try{const ts=Date.now(),id=cid(me,cur),w=await aesEnc(await shared(cur),enc.encode(JSON.stringify(p)));
-  await DB.doc('chats/'+id).set({a:[me,cur].sort()[0],b:[me,cur].sort()[1],last:ts});
-  await DB.collection('chats/'+id+'/msgs').add({from:me,...w,ts})}
- catch(e){toast('Не отправлено: '+(e.code==='resource_exhausted'?'слишком большой объём':'нет права записи или связи'))}}
+function send(p){if(!cur)return;if(S.blocked.includes(cur))return toast('Пользователь в чёрном списке');
+ (S.chats[cur]=S.chats[cur]||[]).push({id:Date.now()+'-'+Math.random().toString(36).slice(2),o:1,ts:Date.now(),p});save();render();flush(cur)}
 $('#snd').onclick=()=>{const v=$('#txt').value.trim();if(v){$('#txt').value='';send({t:'text',v})}};
 $('#txt').onkeydown=e=>{if(e.key==='Enter')$('#snd').click()};
 $('#geo').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>send({t:'geo',lat:p.coords.latitude,lng:p.coords.longitude}),()=>toast('Нет доступа к геопозиции')):toast('Геолокация не поддерживается');
+const rd=f=>new Promise(r=>{const x=new FileReader();x.onload=()=>r(x.result);x.readAsDataURL(f)});
 async function shrink(f,max,q){const i=new Image();i.src=await rd(f);await i.decode();const k=Math.min(1,max/Math.max(i.width,i.height)),c=document.createElement('canvas');
  c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);return c.toDataURL('image/jpeg',q)}
 $('#att').onclick=()=>$('#file').click();
 $('#file').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
- const k=f.type.startsWith('image/')?'img':f.type.startsWith('video/')?'vid':'file';
- if(k==='img'){const v=await shrink(f,900,.6);if(v.length<150000)return send({t:'img',v})}
- else if(f.size<=90000)return send({t:k,n:f.name,v:await rd(f)});
- if(!AS)return toast('Большие файлы недоступны: нет права загрузки');
- if(f.size>12e6)return toast('Файл больше 12 МБ');
- try{toast('Шифруем и загружаем…');const key=await crypto.subtle.generateKey(AES,true,['encrypt','decrypt']),w=await aesEnc(key,await f.arrayBuffer());
-  const a=await AS.upload(new Blob([w.ct],{type:'text/plain'}));
-  send({t:'big',k,n:f.name,mime:f.type,url:'/_blob/'+a.id,iv:w.iv,key:await exp(key)})}
- catch{toast('Не удалось загрузить файл')}};
+ if(f.type.startsWith('image/'))return send({t:'img',v:await shrink(f,1280,.75)});
+ if(f.size>MAXF)return toast('Файл больше 3 МБ');
+ send({t:f.type.startsWith('video/')?'vid':'file',n:f.name,v:await rd(f)})};
 
 // ---- Профиль, подарки, чёрный список ----
-let unG=null;const modal=h=>{unG?.();$('#card').innerHTML=h;$('#modal').hidden=false};
-$('#modal').onclick=e=>{if(e.target.id==='modal'){unG?.();$('#modal').hidden=true}};
-async function profile(id){const u=P[id],isMe=id===me,bl=blocked.includes(id);if(!u)return;
- const fp=await fpr(JSON.parse(u.pub));
+const modal=h=>{$('#card').innerHTML=h;$('#modal').hidden=false};
+$('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').hidden=true};
+async function profile(k){const mine=!k,u=mine?S:S.contacts[k],g=mine?S.gifts:u.gifts||[],bl=!mine&&S.blocked.includes(k);
+ const fp=await fpr(mine?S.pub:JSON.parse(u.pub));
  modal(`${av(u)}<h3 style="margin:0">${esc(u.name)}</h3>
- ${isMe?'<button id="chav" class="g">Сменить аватарку</button>':`<button id="sg">🎁 Подарить</button><button id="bk" class="g">${bl?'Разблокировать':'В чёрный список'}</button>`}
- <b>Подарки</b><div class="gifts" id="gl"><span style="color:var(--mut)">Пока нет</span></div>
+ ${mine?'<button id="chav" class="g">Сменить аватарку</button><button id="bkp" class="g">Скачать копию данных</button><button id="out" class="g">Выйти</button>':`<button id="sg">🎁 Подарить</button><button id="bk" class="g">${bl?'Разблокировать':'В чёрный список'}</button>`}
+ <b>Подарки</b><div class="gifts">${g.length?g.map(x=>`<span class="gf a${x.g|0}" title="от ${esc(x.from)}">${GIFTS[x.g]||'🎁'}</span>`).join(''):'<span style="color:var(--mut)">Пока нет</span>'}</div>
  <div class="fp">Отпечаток ключа (сверьте с собеседником):<br>${fp}</div>`);
- unG=DB.collection('gifts/'+id+'/items').orderBy('ts','desc').limit(60).onSnapshot(s=>{const gl=$('#gl');if(!gl||!s.size)return;
-  gl.innerHTML=s.docs.map(d=>{const g=d.data();return`<span class="gf a${g.g|0}" title="от ${esc(P[g.from]?.name||'?')}">${GIFTS[g.g]||'🎁'}</span>`}).join('')});
- if(isMe)$('#chav').onclick=()=>$('#avf').click();
- else{$('#bk').onclick=async()=>{blocked=bl?blocked.filter(x=>x!==id):[...blocked,id];await mine().doc('blocked').set({list:blocked});draw();profile(id)};
+ if(mine){$('#chav').onclick=()=>$('#avf').click();$('#out').onclick=async()=>{await save();location.reload()};
+  $('#bkp').onclick=async()=>{await save();const r=await kv('get','u:'+lc(me)),a=document.createElement('a');
+   a.href=URL.createObjectURL(new Blob([JSON.stringify(r)],{type:'application/json'}));a.download='signal-'+lc(me)+'.backup';a.click()}}
+ else{$('#bk').onclick=()=>{if(bl)S.blocked=S.blocked.filter(x=>x!==k);else{S.blocked.push(k);conns[k]?.close()}save();draw();profile(k)};
   $('#sg').onclick=()=>{modal(`<b>Выберите подарок</b><div class="gifts pick">${GIFTS.map((e,i)=>`<span class="gf a${i}" data-i="${i}">${e}</span>`).join('')}</div>`);
-   document.querySelectorAll('.pick [data-i]').forEach(s=>s.onclick=async()=>{const g=+s.dataset.i;$('#modal').hidden=true;
-    try{await DB.collection('gifts/'+id+'/items').add({from:me,g,ts:Date.now()});if(cur===id)send({t:'gift',g});toast('Подарок отправлен')}catch{toast('Не удалось отправить подарок')}})}}}
+   document.querySelectorAll('.pick [data-i]').forEach(s=>s.onclick=()=>{send({t:'gift',g:+s.dataset.i});$('#modal').hidden=true})}}}
+$('#rst').onclick=()=>$('#bak').click();
+$('#bak').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
+ try{const r=JSON.parse(await f.text());if(!r.name||!r.salt||!r.iv||!r.ct)throw 0;await kv('put','u:'+lc(r.name),r);$('#u').value=r.name;say('Копия «'+r.name+'» восстановлена. Войдите с прежним паролем.')}
+ catch{say('Это не файл копии')}};
 $('#avf').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
- await DB.doc('profiles/'+me).update({avatar:await shrink(f,160,.8)});$('#modal').hidden=true};
+ S.avatar=await shrink(f,160,.8);save();$('#me').innerHTML=av(S);for(const k in conns)if(conns[k].open)hello(conns[k]);profile()};
 </script></body></html>
