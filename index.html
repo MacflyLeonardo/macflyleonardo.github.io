@@ -112,20 +112,32 @@ let chain=Promise.resolve(),queued=0;
 const save=()=>{if(queued)return chain;queued=1;chain=chain.then(async()=>{queued=0;await kv('put','u:'+lc(me),await rec())});return chain};
 addEventListener('visibilitychange',()=>{if(S&&document.hidden)save()});addEventListener('pagehide',()=>{if(S)save()});
 
+// ---- Каталог аккаунтов (users.json в репозитории) ----
+let DIR={},SELF='__self',regNew=0;
+async function loadDir(){try{const j=await (await fetch('users.json?'+Date.now(),{cache:'no-store'})).json();DIR={};(j.users||[]).forEach(u=>DIR[lc(u.name)]=u);if(S)draw()}catch{}}
+async function exportDir(){await loadDir();
+ DIR[lc(me)]={name:S.name,pub:S.pub,avatar:S.avatar,epriv:{salt:tob64(salt),...await aesEnc(key,enc.encode(JSON.stringify(S.priv)))}};
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({users:Object.values(DIR)},null,1)],{type:'application/json'}));a.download='users.json';a.click();
+ toast('Загрузите users.json в репозиторий рядом с index.html')}
+loadDir();
 // ---- Регистрация и вход ----
 const say=t=>$('#err').textContent=t;
 function creds(){const u=$('#u').value.trim(),p=$('#p').value;
  if(!/^[a-zA-Z0-9_]{3,20}$/.test(u)){say('Имя: 3–20 символов, латиница, цифры и _');return}
  if(p.length<6){say('Пароль не короче 6 символов');return}return[u,p]}
-$('#reg').onclick=async()=>{const c=creds();if(!c)return;const[u,p]=c;
- if(await kv('get','u:'+lc(u)))return say('Такой аккаунт уже есть на этом устройстве');
+$('#reg').onclick=async()=>{const c=creds();if(!c)return;const[u,p]=c;await loadDir();
+ if(DIR[lc(u)]||await kv('get','u:'+lc(u)))return say('Это имя уже занято');
  say('Создаём ключи шифрования…');
  const kp=await crypto.subtle.generateKey(EC,true,['deriveKey']);
  S={name:u,pub:await exp(kp.publicKey),priv:await exp(kp.privateKey),avatar:'',contacts:{},blocked:[],gifts:[],chats:{}};
- salt=crypto.getRandomValues(new Uint8Array(16));key=await pwKey(p,salt);me=u;enter()};
-$('#login').onclick=async()=>{const c=creds();if(!c)return;const[u,p]=c;
- const r=await kv('get','u:'+lc(u));if(!r)return say('Аккаунта нет на этом устройстве. Нажмите «Создать аккаунт».');
- try{salt=fromb64(r.salt);key=await pwKey(p,salt);S=JSON.parse(dec.decode(await aesDec(key,r)));me=S.name;enter()}
+ salt=crypto.getRandomValues(new Uint8Array(16));key=await pwKey(p,salt);me=u;regNew=1;enter()};
+$('#login').onclick=async()=>{const c=creds();if(!c)return;const[u,p]=c;say('Входим…');await loadDir();
+ try{const r=await kv('get','u:'+lc(u));
+  if(r){salt=fromb64(r.salt);key=await pwKey(p,salt);S=JSON.parse(dec.decode(await aesDec(key,r)))}
+  else if(DIR[lc(u)]){const d=DIR[lc(u)];salt=fromb64(d.epriv.salt);key=await pwKey(p,salt);
+   S={name:d.name,pub:d.pub,priv:JSON.parse(dec.decode(await aesDec(key,d.epriv))),avatar:d.avatar||'',contacts:{},blocked:[],gifts:[],chats:{}}}
+  else return say('Аккаунт не найден. Нажмите «Создать аккаунт».');
+  me=S.name;enter()}
  catch{say('Неверный пароль')}};
 
 let tries=0;
@@ -133,13 +145,13 @@ async function enter(){
  priv=await crypto.subtle.importKey('jwk',S.priv,EC,false,['deriveKey']);
  navigator.storage?.persist?.();say('Подключаемся…');startPeer()}
 function startPeer(){peer=new Peer('sgl-'+lc(me));
- peer.on('open',()=>{tries=0;if(!$('#app').hidden)return;$('#auth').hidden=true;$('#app').hidden=false;$('#me').innerHTML=av(S);$('#me').onclick=()=>profile();save();draw();
+ peer.on('open',()=>{tries=0;if(!$('#app').hidden)return;$('#auth').hidden=true;$('#app').hidden=false;$('#me').innerHTML=av(S);$('#me').onclick=()=>profile();save();draw();if(regNew){regNew=0;profile()}
   setInterval(()=>{for(const k in S.contacts)if((S.chats[k]||[]).some(m=>m.o&&!m.ok))flush(k)},15000)});
  peer.on('connection',setup);
  peer.on('disconnected',()=>peer.reconnect());
  peer.on('error',e=>{if(e.type==='unavailable-id'&&$('#app').hidden){peer.destroy();
    if(tries++<8){say('Освобождаем имя после прошлого входа… ('+tries+')');setTimeout(startPeer,3000)}else say('Это имя сейчас онлайн в другом месте')}
-  else if(e.type==='peer-unavailable')toast('Пользователь не в сети или не существует')})}
+  else if(e.type==='peer-unavailable'&&want){toast('Нет в каталоге и не в сети');want=null}})}
 
 // ---- Соединения ----
 const hello=c=>c.send({k:'hello',name:me,pub:S.pub,avatar:S.avatar,gifts:S.gifts});
@@ -148,7 +160,7 @@ function setup(c){const k=c.peer.slice(4),go=()=>{if(S.blocked.includes(k))retur
  c.on('data',d=>onData(c,k,d));
  c.on('close',()=>{if(conns[k]===c)delete conns[k];if(S.contacts[k]){S.contacts[k].seen=Date.now();save()}draw();if(cur===k)head()});c.on('error',()=>{})}
 function connect(k){if(conns[k]?.open||!peer?.open||Date.now()-(pend[k]||0)<10000)return;pend[k]=Date.now();setup(peer.connect('sgl-'+k,{reliable:true}))}
-async function flush(k){const c=conns[k];if(!c?.open||!sk[k])return connect(k);
+async function flush(k){if(k===SELF)return;const c=conns[k];if(!c?.open||!sk[k])return connect(k);
  for(const m of S.chats[k]||[])if(m.o&&!m.ok)c.send({k:'msg',id:m.id,...await aesEnc(sk[k],enc.encode(JSON.stringify(m.p)))})}
 async function onData(c,k,d){
  if(S.blocked.includes(k))return;
@@ -168,15 +180,26 @@ async function onData(c,k,d){
 // ---- Интерфейс ----
 const av=u=>`<div class="av">${u.avatar?`<img src="${esc(u.avatar)}" alt="">`:esc((u.name||'?')[0].toUpperCase())}</div>`;
 const last=k=>(S.chats[k]||[]).slice(-1)[0]?.ts||0;
-function draw(){const l=$('#list'),ks=Object.keys(S.contacts).sort((a,b)=>last(b)-last(a));
- l.innerHTML=ks.length?'':'<p style="padding:16px;color:var(--mut)">Пока никого. Введите имя пользователя выше.</p>';
- ks.forEach(k=>{const c=S.contacts[k],r=document.createElement('div');r.className='row';
-  r.innerHTML=av(c)+`<b>${esc(c.name)}</b>`+(S.blocked.includes(k)?' 🚫':'')+(conns[k]?.open?'<i class="dot"></i>':'');r.onclick=()=>openChat(k);l.append(r)})}
+const ent=k=>S.contacts[k]||DIR[k];
+function listRow(k){const u=k===SELF?{name:'Избранное'}:ent(k),r=document.createElement('div');r.className='row';
+ r.innerHTML=(k===SELF?'<div class="av">⭐</div>':av(u))+`<b>${esc(u.name)}</b>`+(S.blocked.includes(k)?' 🚫':'')+(conns[k]?.open?'<i class="dot"></i>':'');
+ r.onclick=()=>{$('#q').value='';openChat(k)};return r}
+function draw(){const l=$('#list'),q=$('#q').value.trim().toLowerCase();l.innerHTML='';let ks;
+ if(q){ks=[...new Set([...Object.keys(S.contacts),...Object.keys(DIR)])].filter(k=>k!==lc(me)&&k.includes(q));
+  if(!ks.length)l.innerHTML='<p style="padding:16px;color:var(--mut)">В каталоге нет. Нажмите Enter, чтобы поискать напрямую.</p>'}
+ else ks=[SELF,...Object.keys(S.contacts).sort((a,b)=>last(b)-last(a))];
+ ks.forEach(k=>l.append(listRow(k)))}
+$('#q').oninput=draw;
 $('#q').onkeydown=e=>{if(e.key!=='Enter')return;const k=lc(e.target.value.trim());e.target.value='';
- if(!/^[a-z0-9_]{3,20}$/.test(k)||k===lc(me))return toast('Введите имя другого пользователя');
- if(S.contacts[k])return openChat(k);want=k;pend[k]=0;connect(k);toast('Ищем «'+k+'»…')};
-function head(){const c=S.contacts[cur];$('#peer').innerHTML=av(c)+`<b>${esc(c.name)}</b><span style="color:var(--mut);font-size:12px;margin-left:auto">${conns[cur]?.open?'в сети':c.seen?'был(а) '+new Date(c.seen).toLocaleString([],{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'не в сети'}</span>`;$('#peer').onclick=()=>profile(cur)}
-function openChat(k){cur=k;$('#empty').hidden=true;$('#chat').hidden=false;$('#app').classList.add('open');head();render();connect(k);flush(k)}
+ if(!/^[a-z0-9_]{3,20}$/.test(k)||k===lc(me)){draw();return toast('Введите имя другого пользователя')}
+ if(S.contacts[k]||DIR[k])return openChat(k);want=k;pend[k]=0;connect(k);toast('Ищем «'+k+'» напрямую…')};
+function head(){if(cur===SELF){$('#peer').innerHTML='<div class="av">⭐</div><b>Избранное</b><span style="color:var(--mut);font-size:12px;margin-left:auto">заметки для себя</span>';$('#peer').onclick=null;return}
+ const c=S.contacts[cur];$('#peer').innerHTML=av(c)+`<b>${esc(c.name)}</b><span style="color:var(--mut);font-size:12px;margin-left:auto">${conns[cur]?.open?'в сети':c.seen?'был(а) '+new Date(c.seen).toLocaleString([],{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'доставим, когда зайдёт'}</span>`;$('#peer').onclick=()=>profile(cur)}
+async function openChat(k){
+ if(k!==SELF){if(!S.contacts[k]&&DIR[k]){const d=DIR[k];S.contacts[k]={name:d.name,pub:JSON.stringify(d.pub),avatar:d.avatar||'',gifts:[]};save()}
+  if(!S.contacts[k])return;
+  if(!sk[k])sk[k]=await crypto.subtle.deriveKey({name:'ECDH',public:await crypto.subtle.importKey('jwk',JSON.parse(S.contacts[k].pub),EC,false,[])},priv,AES,false,['encrypt','decrypt'])}
+ cur=k;$('#empty').hidden=true;$('#chat').hidden=false;$('#app').classList.add('open');head();render();if(k!==SELF){connect(k);flush(k)}}
 $('#back').onclick=()=>{$('#app').classList.remove('open');cur=null};
 function render(){const b=$('#msgs');b.innerHTML='';(S.chats[cur]||[]).forEach(m=>b.append(bubble(m)));b.scrollTop=b.scrollHeight}
 function bubble({p,o,ts,ok}){const d=document.createElement('div');d.className='m'+(o?' o':'');
@@ -191,7 +214,7 @@ function bubble({p,o,ts,ok}){const d=document.createElement('div');d.className='
 
 // ---- Отправка ----
 function send(p){if(!cur)return;if(S.blocked.includes(cur))return toast('Пользователь в чёрном списке');
- (S.chats[cur]=S.chats[cur]||[]).push({id:Date.now()+'-'+Math.random().toString(36).slice(2),o:1,ts:Date.now(),p});save();render();flush(cur)}
+ (S.chats[cur]=S.chats[cur]||[]).push({id:Date.now()+'-'+Math.random().toString(36).slice(2),o:1,ts:Date.now(),p,ok:cur===SELF?1:0});save();render();flush(cur)}
 $('#snd').onclick=()=>{const v=$('#txt').value.trim();if(v){$('#txt').value='';send({t:'text',v})}};
 $('#txt').onkeydown=e=>{if(e.key==='Enter')$('#snd').click()};
 $('#geo').onclick=()=>navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>send({t:'geo',lat:p.coords.latitude,lng:p.coords.longitude}),()=>toast('Нет доступа к геопозиции')):toast('Геолокация не поддерживается');
@@ -210,10 +233,11 @@ $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').hidden=true};
 async function profile(k){const mine=!k,u=mine?S:S.contacts[k],g=mine?S.gifts:u.gifts||[],bl=!mine&&S.blocked.includes(k);
  const fp=await fpr(mine?S.pub:JSON.parse(u.pub));
  modal(`${av(u)}<h3 style="margin:0">${esc(u.name)}</h3>
- ${mine?'<button id="chav" class="g">Сменить аватарку</button><button id="bkp" class="g">Скачать копию данных</button><button id="out" class="g">Выйти</button>':`<button id="sg">🎁 Подарить</button><button id="bk" class="g">${bl?'Разблокировать':'В чёрный список'}</button>`}
+ ${mine?'<button id="chav" class="g">Сменить аватарку</button><button id="pubd">Опубликовать в каталог (users.json)</button><button id="bkp" class="g">Скачать копию данных</button><button id="out" class="g">Выйти</button><div class="fp">Чтобы вас находили другие: нажмите «Опубликовать» и загрузите скачанный users.json в репозиторий рядом с index.html.</div>':`<button id="sg">🎁 Подарить</button><button id="bk" class="g">${bl?'Разблокировать':'В чёрный список'}</button>`}
  <b>Подарки</b><div class="gifts">${g.length?g.map(x=>`<span class="gf a${x.g|0}" title="от ${esc(x.from)}">${GIFTS[x.g]||'🎁'}</span>`).join(''):'<span style="color:var(--mut)">Пока нет</span>'}</div>
  <div class="fp">Отпечаток ключа (сверьте с собеседником):<br>${fp}</div>`);
  if(mine){$('#chav').onclick=()=>$('#avf').click();$('#out').onclick=async()=>{await save();location.reload()};
+  $('#pubd').onclick=exportDir;
   $('#bkp').onclick=async()=>{await save();const r=await kv('get','u:'+lc(me)),a=document.createElement('a');
    a.href=URL.createObjectURL(new Blob([JSON.stringify(r)],{type:'application/json'}));a.download='signal-'+lc(me)+'.backup';a.click()}}
  else{$('#bk').onclick=()=>{if(bl)S.blocked=S.blocked.filter(x=>x!==k);else{S.blocked.push(k);conns[k]?.close()}save();draw();profile(k)};
